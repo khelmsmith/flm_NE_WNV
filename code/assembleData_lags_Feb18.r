@@ -12,9 +12,12 @@ pop <- read.csv("data/NE_county_pops.csv", stringsAsFactors = FALSE)
 pop$year <- as.integer(pop$year)
 pop$cofips <- sprintf("%03d", pop$cofips)
 
+#cases here is the rounded value of the fitted model
 cases <- read.csv("data/sampledat.csv", stringsAsFactors = FALSE)
-
-HCcases <- left_join(pop, cases, by = c("County", "year"))
+#fitted model has size = 5.129 so
+set.seed(4872957) # pick a seed, any seed
+cases2 <- mutate(cases, cases = rnbinom(1, size = 5.129, mu = cases))
+HCcases <- left_join(pop, cases2, by = c("County", "year"))
 
 HCcases[is.na(HCcases)] <- 0
 
