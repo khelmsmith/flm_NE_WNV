@@ -69,6 +69,7 @@ allmods_list <- map(tlag,
                     ~sprintf(models, .x, .x))
 allmods <- flatten(allmods_list)
 
+# Warning! Takes a long time to run!
 allfits <- map(allmods, ~gam(as.formula(.x), data=allLagsT, family=nb()))
 
 results2 <- map_df(allfits,glance)
