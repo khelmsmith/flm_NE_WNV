@@ -16,7 +16,7 @@ pop$cofips <- sprintf("%03d", pop$cofips)
 cases <- read.csv("data/sampledat.csv", stringsAsFactors = FALSE)
 #fitted model has size = 5.129 so
 set.seed(4872957) # pick a seed, any seed
-cases2 <- mutate(cases, cases = rnbinom(1, size = 5.129, mu = cases))
+cases2 <- mutate(cases, cases = rnbinom(length(cases), size = 5.129, mu = cases))
 HCcases <- left_join(pop, cases2, by = c("County", "year"))
 
 HCcases[is.na(HCcases)] <- 0
