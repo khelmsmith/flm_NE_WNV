@@ -1,21 +1,21 @@
 ## Assemble and set up data if it isn't already done using the chunk below
 
-# source("code/assembleData_lags_Feb18.r")
-# 
-# oosy <- max(allLags$year) # or specify
-# allLags$County <- as.factor(allLags$County)
-# csco <- length(unique(allLags$County))
-# contrasts(allLags$County) = contr.sum(csco)
-# allLags <- allLags[allLags$year >= 2002,]
-# 
-# allLagsT <- allLags[allLags$year != oosy,] #training data
-# yrmin <- min(allLagsT$year)
-# yrmax <- max(allLagsT$year)
-# allLagsT$year <- as.factor(allLagsT$year)
-# csyr <- length(unique(allLagsT$year))
-# contrasts(allLagsT$year) = contr.sum(csyr)
-# 
-# allLagsO <- allLags[allLags$year == oosy,] # out-of-sample data
+source("R/assembleData_lags_Feb18.r")
+
+oosy <- max(allLags$year) # or specify
+allLags$County <- as.factor(allLags$County)
+csco <- length(unique(allLags$County))
+contrasts(allLags$County) = contr.sum(csco)
+allLags <- allLags[allLags$year >= 2002,]
+
+allLagsT <- allLags[allLags$year != oosy,] #training data
+yrmin <- min(allLagsT$year)
+yrmax <- max(allLagsT$year)
+allLagsT$year <- as.factor(allLagsT$year)
+csyr <- length(unique(allLagsT$year))
+contrasts(allLagsT$year) = contr.sum(csyr)
+
+allLagsO <- allLags[allLags$year == oosy,] # out-of-sample data
 
 library(gamm4)
 library(lme4)
