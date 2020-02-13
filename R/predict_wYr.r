@@ -1,4 +1,4 @@
-## Assemble and set up data if it isn't already done using the chunk below
+## Assemble and set up data
 
 source("R/assembleData_lags_Feb18.r")
 
