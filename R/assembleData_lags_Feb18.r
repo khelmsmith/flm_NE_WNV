@@ -82,7 +82,7 @@ spei$County <- gsub(" ", "", spei$County)
 
 #load lag maker
 
-source("code/teller_2016_make_data.R")
+source("R/teller_2016_make_data.R")
 
 #Fully automated lag-looping 
 
