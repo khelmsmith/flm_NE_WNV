@@ -31,14 +31,14 @@ target.date = "2018-02-01"
 start.year = 2002
 
 # Specify where to put the results
-results.path = "temp/"
+results.path = paste0(tempdir(), "/")
 
 
 ## ----flm-----------------------------------------------------------------
 
 #**# Turned off function call while checking that the package loads
-#flm.results = flm::call.flm(pop, cases, NEdat, spi, spei, target.date, start.year, results.path, in.seed = 4872957)
+flm.results = flm::call.flm(pop, cases, NEdat, spi, spei, target.date, start.year, results.path = results.path, in.seed = 4872957)
 
 # Examine flm.results
-
+list.files(results.path)
 

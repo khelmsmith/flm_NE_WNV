@@ -410,14 +410,100 @@ target.date = &quot;2018-02-01&quot;
 start.year = 2002
 
 # Specify where to put the results
-results.path = &quot;temp/&quot;</code></pre>
+results.path = paste0(tempdir(), &quot;/&quot;)</code></pre>
 </div>
 <div id="run-the-model" class="section level2">
 <h2>Run the model</h2>
+<p>The results files will be in /var/folders/l7/phxvgpf50yb07gl09trvp6jwcyt3qd/T//RtmpZNh0J7/</p>
 <pre class="r"><code>#**# Turned off function call while checking that the package loads
-#flm.results = flm::call.flm(pop, cases, NEdat, spi, spei, target.date, start.year, results.path, in.seed = 4872957)
+flm.results = flm::call.flm(pop, cases, NEdat, spi, spei, target.date, start.year, results.path = results.path, in.seed = 4872957)</code></pre>
+<pre><code>## Assembling Data</code></pre>
+<pre><code>## Joining, by = &quot;cofips&quot;</code></pre>
+<pre><code>## Elapsed Time: 30.02</code></pre>
+<pre><code>## Making predictions without Year as a covariate</code></pre>
+<pre><code>## Warning in newton(lsp = lsp, X = G$X, y = G$y, Eb = G$Eb, UrS = G$UrS, L =
+## G$L, : Fitting terminated with step failure - check results carefully
 
-# Examine flm.results</code></pre>
+## Warning in newton(lsp = lsp, X = G$X, y = G$y, Eb = G$Eb, UrS = G$UrS, L =
+## G$L, : Fitting terminated with step failure - check results carefully
+
+## Warning in newton(lsp = lsp, X = G$X, y = G$y, Eb = G$Eb, UrS = G$UrS, L =
+## G$L, : Fitting terminated with step failure - check results carefully
+
+## Warning in newton(lsp = lsp, X = G$X, y = G$y, Eb = G$Eb, UrS = G$UrS, L =
+## G$L, : Fitting terminated with step failure - check results carefully
+
+## Warning in newton(lsp = lsp, X = G$X, y = G$y, Eb = G$Eb, UrS = G$UrS, L =
+## G$L, : Fitting terminated with step failure - check results carefully
+
+## Warning in newton(lsp = lsp, X = G$X, y = G$y, Eb = G$Eb, UrS = G$UrS, L =
+## G$L, : Fitting terminated with step failure - check results carefully
+
+## Warning in newton(lsp = lsp, X = G$X, y = G$y, Eb = G$Eb, UrS = G$UrS, L =
+## G$L, : Fitting terminated with step failure - check results carefully
+
+## Warning in newton(lsp = lsp, X = G$X, y = G$y, Eb = G$Eb, UrS = G$UrS, L =
+## G$L, : Fitting terminated with step failure - check results carefully
+
+## Warning in newton(lsp = lsp, X = G$X, y = G$y, Eb = G$Eb, UrS = G$UrS, L =
+## G$L, : Fitting terminated with step failure - check results carefully
+
+## Warning in newton(lsp = lsp, X = G$X, y = G$y, Eb = G$Eb, UrS = G$UrS, L =
+## G$L, : Fitting terminated with step failure - check results carefully
+
+## Warning in newton(lsp = lsp, X = G$X, y = G$y, Eb = G$Eb, UrS = G$UrS, L =
+## G$L, : Fitting terminated with step failure - check results carefully
+
+## Warning in newton(lsp = lsp, X = G$X, y = G$y, Eb = G$Eb, UrS = G$UrS, L =
+## G$L, : Fitting terminated with step failure - check results carefully
+
+## Warning in newton(lsp = lsp, X = G$X, y = G$y, Eb = G$Eb, UrS = G$UrS, L =
+## G$L, : Fitting terminated with step failure - check results carefully
+
+## Warning in newton(lsp = lsp, X = G$X, y = G$y, Eb = G$Eb, UrS = G$UrS, L =
+## G$L, : Fitting terminated with step failure - check results carefully
+
+## Warning in newton(lsp = lsp, X = G$X, y = G$y, Eb = G$Eb, UrS = G$UrS, L =
+## G$L, : Fitting terminated with step failure - check results carefully
+
+## Warning in newton(lsp = lsp, X = G$X, y = G$y, Eb = G$Eb, UrS = G$UrS, L =
+## G$L, : Fitting terminated with step failure - check results carefully
+
+## Warning in newton(lsp = lsp, X = G$X, y = G$y, Eb = G$Eb, UrS = G$UrS, L =
+## G$L, : Fitting terminated with step failure - check results carefully</code></pre>
+<pre><code>## Elapsed Time: 16.25; Process time: 15.75</code></pre>
+<pre><code>## Making a plot of lags without year</code></pre>
+<pre><code>## Saving 7 x 5 in image</code></pre>
+<pre><code>## Elapsed Time: 16.26; Process time: 0.50</code></pre>
+<pre><code>## Warning in flm::call.flm(pop, cases, NEdat, spi, spei, target.date,
+## start.year, : Predict with Year disabled due to a bug in L29: mismatch
+## between length of objects</code></pre>
+<pre><code>## Comparing models with and without lags</code></pre>
+<pre><code>## Warning in newton(lsp = lsp, X = G$X, y = G$y, Eb = G$Eb, UrS = G$UrS, L =
+## G$L, : Fitting terminated with step failure - check results carefully
+
+## Warning in newton(lsp = lsp, X = G$X, y = G$y, Eb = G$Eb, UrS = G$UrS, L =
+## G$L, : Fitting terminated with step failure - check results carefully</code></pre>
+<pre><code>## Elapsed Time: 16.55; Process time: 17.21</code></pre>
+<pre class="r"><code># Examine flm.results
+list.files(results.path)</code></pre>
+<pre><code>##  [1] &quot;downloaded_packages&quot;                                                                 
+##  [2] &quot;file5d8213eb911f&quot;                                                                    
+##  [3] &quot;file5d82146519ce&quot;                                                                    
+##  [4] &quot;file5d8215820ee6&quot;                                                                    
+##  [5] &quot;file5d824e849470&quot;                                                                    
+##  [6] &quot;file5d82622d6d55&quot;                                                                    
+##  [7] &quot;file5d8279812dd7&quot;                                                                    
+##  [8] &quot;file5d82da02912&quot;                                                                     
+##  [9] &quot;file5d82de863bb&quot;                                                                     
+## [10] &quot;lags.png&quot;                                                                            
+## [11] &quot;libloc_170_ec2a4729d502ddfd.rds&quot;                                                     
+## [12] &quot;libloc_213_e619d72855daa0d8.rds&quot;                                                     
+## [13] &quot;repos_https%3A%2F%2Fcran.rstudio.com%2Fbin%2Fmacosx%2Fel-capitan%2Fcontrib%2F3.6.rds&quot;
+## [14] &quot;repos_https%3A%2F%2Fcran.rstudio.com%2Fsrc%2Fcontrib.rds&quot;                            
+## [15] &quot;results1.csv&quot;                                                                        
+## [16] &quot;temp_libpath5d826927a3b0&quot;                                                            
+## [17] &quot;temp_libpath5d828d9d644&quot;</code></pre>
 </div>
 
 
