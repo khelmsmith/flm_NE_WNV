@@ -105,7 +105,7 @@ NULL
 #' @param start.year The first year to include in the training data
 #' @param results.path The path where results will be written
 #' @param in.seed The starting number for the random number generator. This makes the results repeatable.
-#' 
+#' @export
 call.flm = function(pop, cases, NEdat, spi, spei, target.date = "2018-02-01",
                     start.year = 2002, results.path = 'temp/', in.seed = 4872957){
 
