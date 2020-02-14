@@ -4,7 +4,7 @@
 \alias{see.lags}
 \title{See Lags}
 \usage{
-see.lags(mod)
+see.lags(mod, results.path)
 }
 \arguments{
 \item{mod}{The input model object created by predict_noYr or predict_wYr}

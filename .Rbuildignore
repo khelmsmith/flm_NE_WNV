@@ -3,3 +3,5 @@
 codemeta.json
 .travis.yml
 ^codecov\.yml$
+^doc$
+^Meta$

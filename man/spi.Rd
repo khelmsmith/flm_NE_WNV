@@ -4,7 +4,7 @@
 \name{spi}
 \alias{spi}
 \title{spi}
-\format{An object of class \code{data.frame} with 23622 rows and 5 columns.}
+\format{An object of class \code{data.frame} with 24552 rows and 4 columns.}
 \usage{
 spi
 }
