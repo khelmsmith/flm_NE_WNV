@@ -26,7 +26,7 @@ appLags<-function(agDatC, nUnits, name, fun){
 }
 
 # now put it all together
-makeDat = function(envData, response, monthStart, meas){
+makeDat = function(envData, response, monthStart, meas, nUnits){
 
   # aggregates data to longer segments (e.g. daily -> monthly)
   AggEnv <- aggLags(datC=envData, fun=sum, meas=meas, seg=month)

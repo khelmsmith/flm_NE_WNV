@@ -53,7 +53,8 @@ extract_functional <- function (x, se = TRUE, select = NULL, scale = -1)
       else {
         stop(paste(xsm$term,"not a linear functional."))
       }
-      X <- mgcv:::PredictMat(xsm, dat)
+      #X <- mgcv:::PredictMat(xsm, dat)
+      X <- mgcv::PredictMat(xsm, dat)
       label <- paste(xsm$term,xsm$by,sep=":")
       # return() # end of mgcv:::plot.mgcv.smooth
       P <- list(label = label, X = X, x = xx)

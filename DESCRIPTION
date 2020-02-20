@@ -1,0 +1,43 @@
+Package: flm
+Type: Package
+Title: Functional Linear Modeling For Vector-borne Disease
+Version: 0.1.0
+Authors@R: c(person("Kelly", "Smith", role = c("aut", "cre"),
+           email = "ksmith2@unl.edu"), person("Andrew", "Tyre",
+           role = c("aut"), email = "atyre2@unl.edu"))
+Author: Kelly Smith <ksmith2@unl.edu>,
+        Andrew Tyre <atyre2@unl.edu>
+Maintainer: Kelly Smith <ksmith2@unl.edu>
+Description: Model future West Nile virus risk. The model uses a functional
+	linear modeling approach with drought, temperature, humidity,
+	and human population data as inputs to forecast risk of vector-borne
+	diseases. The model was developed to predict West Nile virus in Nebraska.
+	The file teller_2016_make_data.R is adapted from Teller, B. J., Adler, P. B.,
+	Edwards, C. B., Hooker, G., & Ellner, S. P. (2016). Linking demography with
+	drivers: Climate and competition. Methods in Ecology and Evolution, 7(2),
+	171–183. https://doi.org/10.1111/2041-210X.12486.
+License: All Rights Reserved
+URL: https://github.com/khelmsmith/flm_NE_WNV
+BugReports: https://github.com/khelmsmith/flm_NE_WNV/issues
+Language: en-US
+Encoding: UTF-8
+LazyData: true
+VignetteBuilder: knitr
+Imports:
+	dplyr,
+	stringr,
+	tidyr,
+	lubridate,
+	readxl,
+	broom,
+	gamm4,
+	lme4,
+	mgcv,
+	MuMIn,
+	purrr,
+	ggplot2
+Suggests:
+    knitr,
+    rmarkdown,
+    testthat (>= 2.1.0),
+RoxygenNote: 6.1.1

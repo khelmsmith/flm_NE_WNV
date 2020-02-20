@@ -1,0 +1,7 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+codemeta.json
+.travis.yml
+^codecov\.yml$
+^doc$
+^Meta$
