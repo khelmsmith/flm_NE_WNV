@@ -1,6 +1,7 @@
 # flm_NE_WNV
 
-Testing pull request workflow
+Testing pull request workflow.
+Seems to work. 
 
 ## Functional linear modeling of West Nile Virus in Nebraska
 
