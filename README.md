@@ -1,8 +1,5 @@
 # flm_NE_WNV
 
-Testing pull request workflow.
-Seems to work. 
-
 ## Functional linear modeling of West Nile Virus in Nebraska
 
 Simulated case data and actual climate and population covariates used in 
