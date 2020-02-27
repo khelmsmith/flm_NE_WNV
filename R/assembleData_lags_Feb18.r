@@ -198,11 +198,11 @@ assemble.data.lags = function(pop, cases, NEdat, spi, spei, target.date, start.y
   allLags <- allLags[allLags$year >= start.year,]
   
   allLagsT <- allLags[allLags$year != oosy,] #training data
-  # yrmin <- min(allLagsT$year)
-  # yrmax <- max(allLagsT$year)
-  # allLagsT$year <- as.factor(allLagsT$year)
-  # csyr <- length(unique(allLagsT$year))
-  # contrasts(allLagsT$year) = contr.sum(csyr)
+  yrmin <- min(allLagsT$year)
+  yrmax <- max(allLagsT$year)
+  allLagsT$year <- as.factor(allLagsT$year)
+  csyr <- length(unique(allLagsT$year))
+  contrasts(allLagsT$year) = contr.sum(csyr)
   
   allLagsO <- allLags[allLags$year == oosy,] # out-of-sample data
   

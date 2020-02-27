@@ -144,7 +144,7 @@ call.flm = function(pop, cases, NEdat, spi, spei, target.date = "2018-02-01",
   ))
   
   process.start = Sys.time()
-  models_lags(allmods[1:4], allLagsT, allLagsO, results.path) #**# OUTPUT?
+  results <- models_lags(allmods[1:2], allLagsT, allLagsO, results.path) #**# OUTPUT?
   message(sprintf("Elapsed Time: %.2f; Process time: %.2f", (Sys.time() - start.time), (Sys.time() - process.start)))
   
   #**# Update when these are extracted in a format that can be passed to dfmip
