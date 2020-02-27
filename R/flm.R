@@ -144,13 +144,13 @@ call.flm = function(pop, cases, NEdat, spi, spei, target.date = "2018-02-01",
   ))
   
   process.start = Sys.time()
-  results <- models_lags(allmods[1:2], allLagsT, allLagsO, results.path) #**# OUTPUT?
+  results <- models_lags(allmods[1:2], allLagsT, allLagsO, results.path) 
   message(sprintf("Elapsed Time: %.2f; Process time: %.2f", (Sys.time() - start.time), (Sys.time() - process.start)))
   
   #**# Update when these are extracted in a format that can be passed to dfmip
-  flm.results = NA
+  flm.results = results$predictions
   flm.distributions = NA
-  flm.other = NA
+  flm.other = results$other
   
   # Return model results as a list
   #**# Need to return data in something that can be extracted by the update.df function

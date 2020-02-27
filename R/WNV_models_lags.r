@@ -1,6 +1,5 @@
 
 models_lags = function(models, allLagsT, allLagsO, results.path){
-  
   allfits <- map(models, ~gam(as.formula(.x), data=allLagsT, family=nb()))
   # only predict from AIC best model
   AICfits <- map_dbl(allfits, MuMIn::AICc)
