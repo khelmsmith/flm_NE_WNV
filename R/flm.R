@@ -120,22 +120,22 @@ call.flm = function(pop, cases, NEdat, spi, spei, target.date = "2018-02-01",
   allLagsO = adl.out[[2]]
   message(sprintf("Elapsed Time: %.2f", Sys.time() - start.time))
   
-  # Predict without Year
-  message("Making predictions without Year as a covariate")
-  process.start = Sys.time()
-  noYr.out = predict_noYr(allLagsT, allLagsO)
-  noYr.prediction = noYr.out[[1]]
-  noYr.mod = noYr.out[[2]]
-  message(sprintf("Elapsed Time: %.2f; Process time: %.2f", (Sys.time() - start.time), (Sys.time() - process.start)))
-  
-  # Plot lags without year
-  message("Making a plot of lags without year")
-  process.start = Sys.time()
-  see.lags(noYr.mod, results.path)
-  message(sprintf("Elapsed Time: %.2f; Process time: %.2f", (Sys.time() - start.time), (Sys.time() - process.start)))
+  # # Predict without Year
+  # message("Making predictions without Year as a covariate")
+  # process.start = Sys.time()
+  # noYr.out = predict_noYr(allLagsT, allLagsO)
+  # noYr.prediction = noYr.out[[1]]
+  # noYr.mod = noYr.out[[2]]
+  # message(sprintf("Elapsed Time: %.2f; Process time: %.2f", (Sys.time() - start.time), (Sys.time() - process.start)))
+  # 
+  # # Plot lags without year
+  # message("Making a plot of lags without year")
+  # process.start = Sys.time()
+  # see.lags(noYr.mod, results.path)
+  # message(sprintf("Elapsed Time: %.2f; Process time: %.2f", (Sys.time() - start.time), (Sys.time() - process.start)))
   
   # Predict with Year
-  warning("Predict with Year disabled due to a bug in L29: mismatch between length of objects")
+  # warning("Predict with Year disabled due to a bug in L29: mismatch between length of objects")
   #Yr.out = predict_wYr(allLagsT, allLagsO)
   #Yr.prediction = Yr.out[[1]]
   #Yr.mod = Yr.out[[2]]
@@ -145,8 +145,28 @@ call.flm = function(pop, cases, NEdat, spi, spei, target.date = "2018-02-01",
   
   # Compare models with and without lags
   message("Comparing models with and without lags")
+
+  tlag = c(12, 18, 24, 30, 36)
+  models <- c("cases ~ s(lags_tmean%d, by=tmean%d) + County + year + offset(log(pop100K))",
+              "cases ~ s(lags_tmean%d, by=tmean%d) + CI + County + year + offset(log(pop100K))",
+              
+              "cases ~ s(lags_ppt%d, by=ppt%d) + County + year + offset(log(pop100K))",
+              "cases ~ s(lags_ppt%d, by=ppt%d) + CI + County + year + offset(log(pop100K))",
+              
+              "cases ~ s(lags_spi%d, by=spi%d) + County + year + offset(log(pop100K))",
+              "cases ~ s(lags_spi%d, by=spi%d) + CI + County + year + offset(log(pop100K))",
+              
+              "cases ~ s(lags_spei%d, by=spei%d) + County + year + offset(log(pop100K))",
+              "cases ~ s(lags_spei%d, by=spei%d) + CI + County + year + offset(log(pop100K))")
+  allmods_list <- map(tlag,
+                      ~sprintf(models, .x, .x))
+  allmods <- flatten(c(allmods_list,
+                       list("cases ~ County + year + offset(log(pop100K)",
+                            "cases ~ CI + County + year + offset(log(pop100K))")
+  ))
+  
   process.start = Sys.time()
-  models_lags(allLagsT, allLagsO, results.path) #**# OUTPUT?
+  models_lags(allmods[1:4], allLagsT, allLagsO, results.path) #**# OUTPUT?
   message(sprintf("Elapsed Time: %.2f; Process time: %.2f", (Sys.time() - start.time), (Sys.time() - process.start)))
   
   #**# Update when these are extracted in a format that can be passed to dfmip

@@ -1,10 +1,9 @@
 
-models_lags = function(allLagsT, allLagsO, results.path){
+models_lags = function(models, allLagsT, allLagsO, results.path){
   
   # no lagged variables
   
-  models <- list(cases ~ County + year + offset(log(pop100K)),
-                 cases ~ CI + County + year + offset(log(pop100K)))
+  models <- 
   
   fits <- lapply(models, gam, data=allLagsT, family=nb())
   
@@ -16,23 +15,7 @@ models_lags = function(allLagsT, allLagsO, results.path){
   
   #one lagged variable
   
-  tlag = c(12, 18, 24, 30, 36)
   
-  models <- c("cases ~ s(lags_tmean%d, by=tmean%d) + County + year + offset(log(pop100K))",
-              "cases ~ s(lags_tmean%d, by=tmean%d) + CI + County + year + offset(log(pop100K))",
-  
-              "cases ~ s(lags_ppt%d, by=ppt%d) + County + year + offset(log(pop100K))",
-              "cases ~ s(lags_ppt%d, by=ppt%d) + CI + County + year + offset(log(pop100K))",
-  
-              "cases ~ s(lags_spi%d, by=spi%d) + County + year + offset(log(pop100K))",
-              "cases ~ s(lags_spi%d, by=spi%d) + CI + County + year + offset(log(pop100K))",
-  
-              "cases ~ s(lags_spei%d, by=spei%d) + County + year + offset(log(pop100K))",
-              "cases ~ s(lags_spei%d, by=spei%d) + CI + County + year + offset(log(pop100K))")
-  
-  allmods_list <- map(tlag,
-                      ~sprintf(models, .x, .x))
-  allmods <- flatten(allmods_list)
   
   # Warning! Takes a long time to run!
   # allfits <- map(allmods, ~gam(as.formula(.x), data=allLagsT, family=nb()))
