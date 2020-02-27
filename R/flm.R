@@ -81,7 +81,7 @@ NULL
 #' @import dplyr
 #' @import stringr
 #' @import tidyr
-#' @import lubridate
+#' @importFrom lubridate parse_date_time
 #' @import readxl
 #' @import broom
 #' @import gamm4
@@ -120,28 +120,6 @@ call.flm = function(pop, cases, NEdat, spi, spei, target.date = "2018-02-01",
   allLagsO = adl.out[[2]]
   message(sprintf("Elapsed Time: %.2f", Sys.time() - start.time))
   
-  # # Predict without Year
-  # message("Making predictions without Year as a covariate")
-  # process.start = Sys.time()
-  # noYr.out = predict_noYr(allLagsT, allLagsO)
-  # noYr.prediction = noYr.out[[1]]
-  # noYr.mod = noYr.out[[2]]
-  # message(sprintf("Elapsed Time: %.2f; Process time: %.2f", (Sys.time() - start.time), (Sys.time() - process.start)))
-  # 
-  # # Plot lags without year
-  # message("Making a plot of lags without year")
-  # process.start = Sys.time()
-  # see.lags(noYr.mod, results.path)
-  # message(sprintf("Elapsed Time: %.2f; Process time: %.2f", (Sys.time() - start.time), (Sys.time() - process.start)))
-  
-  # Predict with Year
-  # warning("Predict with Year disabled due to a bug in L29: mismatch between length of objects")
-  #Yr.out = predict_wYr(allLagsT, allLagsO)
-  #Yr.prediction = Yr.out[[1]]
-  #Yr.mod = Yr.out[[2]]
-
-  # Plot lags with year
-  #see.lags(Yr.mod, results.path)
   
   # Compare models with and without lags
   message("Comparing models with and without lags")
