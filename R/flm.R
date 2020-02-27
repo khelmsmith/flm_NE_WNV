@@ -96,7 +96,6 @@ NULL
 
 #' Main function
 #' 
-#' @param models Character vector of formulas for models to fit
 #' @param pop #**# Add documentation
 #' @param cases #**# Add documentation
 #' @param NEdat #**# Add documentation
@@ -107,7 +106,7 @@ NULL
 #' @param results.path The path where results will be written
 #' @param in.seed The starting number for the random number generator. This makes the results repeatable.
 #' @export
-call.flm = function(models, pop, cases, NEdat, spi, spei, target.date = "2018-02-01",
+call.flm = function(pop, cases, NEdat, spi, spei, target.date = "2018-02-01",
                     start.year = 2002, results.path = 'temp/', in.seed = 4872957){
 
   # Check that results.path has a trailing slash
@@ -122,16 +121,36 @@ call.flm = function(models, pop, cases, NEdat, spi, spei, target.date = "2018-02
   message(sprintf("Elapsed Time: %.2f", Sys.time() - start.time))
   
   
+  # Compare models with and without lags
+  message("Comparing models with and without lags")
 
+  tlag = c(12, 18, 24, 30, 36)
+  models <- c("cases ~ s(lags_tmean%d, by=tmean%d) + County + year + offset(log(pop100K))",
+              "cases ~ s(lags_tmean%d, by=tmean%d) + CI + County + year + offset(log(pop100K))",
+              
+              "cases ~ s(lags_ppt%d, by=ppt%d) + County + year + offset(log(pop100K))",
+              "cases ~ s(lags_ppt%d, by=ppt%d) + CI + County + year + offset(log(pop100K))",
+              
+              "cases ~ s(lags_spi%d, by=spi%d) + County + year + offset(log(pop100K))",
+              "cases ~ s(lags_spi%d, by=spi%d) + CI + County + year + offset(log(pop100K))",
+              
+              "cases ~ s(lags_spei%d, by=spei%d) + County + year + offset(log(pop100K))",
+              "cases ~ s(lags_spei%d, by=spei%d) + CI + County + year + offset(log(pop100K))")
+  allmods_list <- map(tlag,
+                      ~sprintf(models, .x, .x))
+  allmods <- flatten(c(allmods_list,
+                       list("cases ~ County + year + offset(log(pop100K)",
+                            "cases ~ CI + County + year + offset(log(pop100K))")
+  ))
   
   process.start = Sys.time()
-  results <- models_lags(models, allLagsT, allLagsO, results.path) #**# OUTPUT?
+  results <- models_lags(allmods[1:2], allLagsT, allLagsO, results.path) #**# OUTPUT?
   message(sprintf("Elapsed Time: %.2f; Process time: %.2f", (Sys.time() - start.time), (Sys.time() - process.start)))
   
   #**# Update when these are extracted in a format that can be passed to dfmip
-  flm.results = results$predictions
+  flm.results = NA
   flm.distributions = NA
-  flm.other = results$other
+  flm.other = NA
   
   # Return model results as a list
   #**# Need to return data in something that can be extracted by the update.df function

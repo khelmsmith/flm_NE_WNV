@@ -47,40 +47,14 @@ start.year = 2002
 results.path = paste0(tempdir(), "/")
 
 ```
-## Specify the models to fit
 
-```{r}
-  # Compare models with and without lags
-  message("Comparing models with and without lags")
-
-  tlag = c(12, 18, 24, 30, 36)
-  models <- c("cases ~ s(lags_tmean%d, by=tmean%d) + County + year + offset(log(pop100K))",
-              "cases ~ s(lags_tmean%d, by=tmean%d) + CI + County + year + offset(log(pop100K))",
-              
-              "cases ~ s(lags_ppt%d, by=ppt%d) + County + year + offset(log(pop100K))",
-              "cases ~ s(lags_ppt%d, by=ppt%d) + CI + County + year + offset(log(pop100K))",
-              
-              "cases ~ s(lags_spi%d, by=spi%d) + County + year + offset(log(pop100K))",
-              "cases ~ s(lags_spi%d, by=spi%d) + CI + County + year + offset(log(pop100K))",
-              
-              "cases ~ s(lags_spei%d, by=spei%d) + County + year + offset(log(pop100K))",
-              "cases ~ s(lags_spei%d, by=spei%d) + CI + County + year + offset(log(pop100K))")
-  allmods_list <- map(tlag,
-                      ~sprintf(models, .x, .x))
-  allmods <- flatten(c(allmods_list,
-                       list("cases ~ County + year + offset(log(pop100K)",
-                            "cases ~ CI + County + year + offset(log(pop100K))")
-  ))
-```
-
-
-## Fit the models and generate predictions
+## Run the model
 
 The results files will be in `r results.path`
 ```{r flm}
 
 #**# Turned off function call while checking that the package loads
-flm.results = flm::call.flm(allmods, pop, cases, NEdat, spi, spei, target.date, start.year, results.path = results.path, in.seed = 4872957)
+flm.results = flm::call.flm(pop, cases, NEdat, spi, spei, target.date, start.year, results.path = results.path, in.seed = 4872957)
 
 # Examine flm.results
 list.files(results.path)
