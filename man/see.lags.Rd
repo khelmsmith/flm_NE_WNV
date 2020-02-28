@@ -7,7 +7,7 @@
 see.lags(mod, results.path)
 }
 \arguments{
-\item{mod}{The input model object created by predict_noYr or predict_wYr}
+\item{mod}{A model object created by call.flm}
 }
 \description{
 See Lags

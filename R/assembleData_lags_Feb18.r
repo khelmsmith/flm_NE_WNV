@@ -8,7 +8,7 @@
 #' @param target.date The last date to include for calculation of lags
 #' @param start.year The first year to include in the training data
 #' @param in.seed The starting number for the random number generator. This makes the results repeatable.
-#' 
+#' @export
 assemble.data.lags = function(pop, cases, NEdat, spi, spei, target.date, start.year, in.seed){
   
   # Identify starting month #**# Should this be an input, or is it best to use the month from the target date?

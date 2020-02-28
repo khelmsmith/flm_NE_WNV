@@ -138,14 +138,14 @@ call.flm = function(pop, cases, NEdat, spi, spei, target.date = "2018-02-01",
               "cases ~ s(lags_spei%d, by=spei%d) + CI + County + year + offset(log(pop100K))")
   allmods_list <- map(tlag,
                       ~sprintf(models, .x, .x))
-  allmods <- flatten(c(allmods_list,
-                       list("cases ~ County + year + offset(log(pop100K)",
-                            "cases ~ CI + County + year + offset(log(pop100K))")
-  ))
+  allmods <- flatten(c(list("cases ~ County + year + offset(log(pop100K))",
+                            "cases ~ CI + County + year + offset(log(pop100K))"),
+                       allmods_list
+                       ))
   
   process.start = Sys.time()
 
-  results <- models_lags(allmods, allLagsT, allLagsO, results.path) 
+  results <- models_lags(allmods[1:3], allLagsT, allLagsO, results.path) 
 
   message(sprintf("Elapsed Time: %.2f; Process time: %.2f", (Sys.time() - start.time), (Sys.time() - process.start)))
   

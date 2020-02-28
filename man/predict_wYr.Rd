@@ -2,15 +2,17 @@
 % Please edit documentation in R/predict_wYr.r
 \name{predict_wYr}
 \alias{predict_wYr}
-\title{Predict data without using year}
+\title{Predict data, using imputation to get "new years"}
 \usage{
-predict_wYr(allLagsT, allLagsO)
+predict_wYr(fittedModel, allLagsT, allLagsO)
 }
 \arguments{
+\item{fittedModel}{Model to predict from}
+
 \item{allLagsT}{The assembled data set to use for training}
 
 \item{allLagsO}{The assembled data set to use for out-of-sample prediction}
 }
 \description{
-Predict data without using year
+Predict data, using imputation to get "new years"
 }

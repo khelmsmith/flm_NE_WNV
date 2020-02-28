@@ -3,7 +3,7 @@
 #' @param fittedModel Model to predict from
 #' @param allLagsT The assembled data set to use for training
 #' @param allLagsO The assembled data set to use for out-of-sample prediction
-#'
+#' @export
 predict_wYr = function(fittedModel, allLagsT, allLagsO){
   
   # Plug in the model formula here
