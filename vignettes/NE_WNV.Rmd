@@ -46,7 +46,7 @@ target.date = "2018-02-01"
 start.year = 2002
 
 # Specify where to put the results
-results.path = paste0(tempdir(), "/")
+#results.path = paste0(tempdir(), "/")
 
 ```
 ## Some basic quality control on synthetic data
@@ -78,12 +78,12 @@ allLagsT %>% group_by(year) %>%
 
 ## Run the model
 
-The results files will be in `r results.path`
+
 ```{r flm}
 
 #**# Turned off function call while checking that the package loads
 flm.results = flm::call.flm(pop, cases, NEdat, spi, spei, target.date, start.year, results.path = results.path, in.seed = 4872957)
 
 # Examine flm.results
-list.files(results.path)
+#list.files(results.path)
 ```
