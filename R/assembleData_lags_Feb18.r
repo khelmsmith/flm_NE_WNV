@@ -27,7 +27,6 @@ assemble.data.lags = function(pop, cases, NEdat, spi, spei, target.date, start.y
   
   # compute cumulative indicence
   
-  HCcases <- dplyr::mutate(HCcases, pop100K=pop/100000)
   HC <- HCcases %>%
     dplyr::group_by(County) %>%
       dplyr::mutate(CI = lag(cumsum(cases/pop100K)),
