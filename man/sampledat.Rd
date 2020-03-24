@@ -4,7 +4,7 @@
 \name{sampledat}
 \alias{sampledat}
 \title{sampledat}
-\format{An object of class \code{data.frame} with 1564 rows and 3 columns.}
+\format{An object of class \code{spec_tbl_df} (inherits from \code{tbl_df}, \code{tbl}, \code{data.frame}) with 1488 rows and 4 columns.}
 \usage{
 sampledat
 }

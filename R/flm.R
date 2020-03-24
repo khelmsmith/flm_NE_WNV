@@ -87,7 +87,7 @@ NULL
 #' @import gamm4
 #' @import lme4
 #' @import mgcv
-#' @import MuMIn
+#' @importFrom MuMIn AICc
 #' @import purrr
 #' @import ggplot2
 #' @importFrom stats contr.sum contrasts<- gaussian na.omit predict rnbinom sd update
@@ -107,11 +107,8 @@ NULL
 #' @param in.seed The starting number for the random number generator. This makes the results repeatable.
 #' @export
 call.flm = function(pop, cases, NEdat, spi, spei, target.date = "2018-02-01",
-                    start.year = 2002, results.path = 'temp/', in.seed = 4872957){
+                    start.year = 2002, in.seed = 4872957){
 
-  # Check that results.path has a trailing slash
-  if (substring(results.path, nchar(results.path)) != "/"){ stop("results.path must end in a trailing forward slash: /")  }
-  
   # Assemble data lags
   message("Assembling Data")
   start.time = Sys.time()
@@ -145,7 +142,7 @@ call.flm = function(pop, cases, NEdat, spi, spei, target.date = "2018-02-01",
   
   process.start = Sys.time()
 
-  results <- models_lags(allmods[1:3], allLagsT, allLagsO, results.path) 
+  results <- models_lags(allmods[c(1, 3, 5)], allLagsT, allLagsO, results.path) 
 
   message(sprintf("Elapsed Time: %.2f; Process time: %.2f", (Sys.time() - start.time), (Sys.time() - process.start)))
   
