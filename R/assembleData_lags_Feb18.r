@@ -8,7 +8,7 @@
 #' @param target.date The last date to include for calculation of lags
 #' @param start.year The first year to include in the training data
 #' @param in.seed The starting number for the random number generator. This makes the results repeatable.
-#' 
+#' @export
 assemble.data.lags = function(pop, cases, NEdat, spi, spei, target.date, start.year, in.seed){
   
   # Identify starting month #**# Should this be an input, or is it best to use the month from the target date?
@@ -27,7 +27,6 @@ assemble.data.lags = function(pop, cases, NEdat, spi, spei, target.date, start.y
   
   # compute cumulative indicence
   
-  HCcases <- dplyr::mutate(HCcases, pop100K=pop/100000)
   HC <- HCcases %>%
     dplyr::group_by(County) %>%
       dplyr::mutate(CI = lag(cumsum(cases/pop100K)),
@@ -198,11 +197,11 @@ assemble.data.lags = function(pop, cases, NEdat, spi, spei, target.date, start.y
   allLags <- allLags[allLags$year >= start.year,]
   
   allLagsT <- allLags[allLags$year != oosy,] #training data
-  # yrmin <- min(allLagsT$year)
-  # yrmax <- max(allLagsT$year)
-  # allLagsT$year <- as.factor(allLagsT$year)
-  # csyr <- length(unique(allLagsT$year))
-  # contrasts(allLagsT$year) = contr.sum(csyr)
+  yrmin <- min(allLagsT$year)
+  yrmax <- max(allLagsT$year)
+  allLagsT$year <- as.factor(allLagsT$year)
+  csyr <- length(unique(allLagsT$year))
+  contrasts(allLagsT$year) = contr.sum(csyr)
   
   allLagsO <- allLags[allLags$year == oosy,] # out-of-sample data
   

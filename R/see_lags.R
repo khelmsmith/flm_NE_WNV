@@ -1,6 +1,6 @@
 #' See Lags
 #' 
-#' @param mod The input model object created by predict_noYr or predict_wYr
+#' @param mod A model object created by call.flm
 #' 
 see.lags = function(mod, results.path){
 

@@ -81,13 +81,13 @@ NULL
 #' @import dplyr
 #' @import stringr
 #' @import tidyr
-#' @import lubridate
+#' @importFrom lubridate parse_date_time
 #' @import readxl
 #' @import broom
 #' @import gamm4
 #' @import lme4
 #' @import mgcv
-#' @import MuMIn
+#' @importFrom MuMIn AICc
 #' @import purrr
 #' @import ggplot2
 #' @importFrom stats contr.sum contrasts<- gaussian na.omit predict rnbinom sd update
@@ -107,11 +107,8 @@ NULL
 #' @param in.seed The starting number for the random number generator. This makes the results repeatable.
 #' @export
 call.flm = function(pop, cases, NEdat, spi, spei, target.date = "2018-02-01",
-                    start.year = 2002, results.path = 'temp/', in.seed = 4872957){
+                    start.year = 2002, in.seed = 4872957){
 
-  # Check that results.path has a trailing slash
-  if (substring(results.path, nchar(results.path)) != "/"){ stop("results.path must end in a trailing forward slash: /")  }
-  
   # Assemble data lags
   message("Assembling Data")
   start.time = Sys.time()
@@ -120,39 +117,39 @@ call.flm = function(pop, cases, NEdat, spi, spei, target.date = "2018-02-01",
   allLagsO = adl.out[[2]]
   message(sprintf("Elapsed Time: %.2f", Sys.time() - start.time))
   
-  # Predict without Year
-  message("Making predictions without Year as a covariate")
-  process.start = Sys.time()
-  noYr.out = predict_noYr(allLagsT, allLagsO)
-  noYr.prediction = noYr.out[[1]]
-  noYr.mod = noYr.out[[2]]
-  message(sprintf("Elapsed Time: %.2f; Process time: %.2f", (Sys.time() - start.time), (Sys.time() - process.start)))
-  
-  # Plot lags without year
-  message("Making a plot of lags without year")
-  process.start = Sys.time()
-  see.lags(noYr.mod, results.path)
-  message(sprintf("Elapsed Time: %.2f; Process time: %.2f", (Sys.time() - start.time), (Sys.time() - process.start)))
-  
-  # Predict with Year
-  warning("Predict with Year disabled due to a bug in L29: mismatch between length of objects")
-  #Yr.out = predict_wYr(allLagsT, allLagsO)
-  #Yr.prediction = Yr.out[[1]]
-  #Yr.mod = Yr.out[[2]]
-
-  # Plot lags with year
-  #see.lags(Yr.mod, results.path)
   
   # Compare models with and without lags
   message("Comparing models with and without lags")
+
+  tlag = c(12, 18, 24, 30, 36)
+  models <- c("cases ~ s(lags_tmean%d, by=tmean%d) + County + year + offset(log(pop100K))",
+              "cases ~ s(lags_tmean%d, by=tmean%d) + CI + County + year + offset(log(pop100K))",
+              
+              "cases ~ s(lags_ppt%d, by=ppt%d) + County + year + offset(log(pop100K))",
+              "cases ~ s(lags_ppt%d, by=ppt%d) + CI + County + year + offset(log(pop100K))",
+              
+              "cases ~ s(lags_spi%d, by=spi%d) + County + year + offset(log(pop100K))",
+              "cases ~ s(lags_spi%d, by=spi%d) + CI + County + year + offset(log(pop100K))",
+              
+              "cases ~ s(lags_spei%d, by=spei%d) + County + year + offset(log(pop100K))",
+              "cases ~ s(lags_spei%d, by=spei%d) + CI + County + year + offset(log(pop100K))")
+  allmods_list <- map(tlag,
+                      ~sprintf(models, .x, .x))
+  allmods <- flatten(c(list("cases ~ County + year + offset(log(pop100K))",
+                            "cases ~ CI + County + year + offset(log(pop100K))"),
+                       allmods_list
+                       ))
+  
   process.start = Sys.time()
-  models_lags(allLagsT, allLagsO, results.path) #**# OUTPUT?
+
+  results <- models_lags(allmods[c(1, 3, 5)], allLagsT, allLagsO, results.path) 
+
   message(sprintf("Elapsed Time: %.2f; Process time: %.2f", (Sys.time() - start.time), (Sys.time() - process.start)))
   
   #**# Update when these are extracted in a format that can be passed to dfmip
-  flm.results = NA
+  flm.results = results$predictions
   flm.distributions = NA
-  flm.other = NA
+  flm.other = results$other
   
   # Return model results as a list
   #**# Need to return data in something that can be extracted by the update.df function

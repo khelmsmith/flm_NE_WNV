@@ -5,3 +5,4 @@ codemeta.json
 ^codecov\.yml$
 ^doc$
 ^Meta$
+^data-raw$

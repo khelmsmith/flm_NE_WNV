@@ -1,7 +1,7 @@
 ---
 title: "NE WNV Example"
-author: "Kelly Smith"
-date: "2/11/2020"
+author: "Kelly Smith & Drew Tyre"
+date: "`r Sys.Date()`"
 output: html_document
 vignette: >
   %\VignetteIndexEntry{Functional Linear Modeling for Vector-borne Disease}
@@ -14,7 +14,9 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## Set up data for example
-```{r data}
+```{r data, message=FALSE}
+library(tidyverse)
+library(flm) # makes it easier to do quality control to have functions readily available
 #**# Moving code from assembleData_lags file
 
 # Read in population data
@@ -44,18 +46,44 @@ target.date = "2018-02-01"
 start.year = 2002
 
 # Specify where to put the results
-results.path = paste0(tempdir(), "/")
+#results.path = paste0(tempdir(), "/")
+
+```
+## Some basic quality control on synthetic data
+
+Our approach struggles if there are counties with no cases.
+
+```{r}
+data <- assemble.data.lags(pop, cases, NEdat, spi, spei, target.date = "2018-02-02", start.year = 2004,
+                           in.seed = 4872957)
+allLagsT <- data[[1]] # 2004 - 2017
+# how many counties lack cases?
+allLagsT %>% group_by(County) %>% 
+  summarize(total_cases = sum(cases)) %>% 
+  count(total_cases>0)
 
 ```
 
+What does the state total look like plotted 
+against time?
+
+```{r}
+allLagsT %>% group_by(year) %>% 
+  summarize(total_cases = sum(cases)) %>% 
+  ggplot() + 
+  geom_point(mapping = aes(x = year, y = total_cases))
+```
+
+
+
 ## Run the model
 
-The results files will be in `r results.path`
+
 ```{r flm}
 
 #**# Turned off function call while checking that the package loads
-flm.results = flm::call.flm(pop, cases, NEdat, spi, spei, target.date, start.year, results.path = results.path, in.seed = 4872957)
+flm.results = flm::call.flm(pop, cases, NEdat, spi, spei, target.date, start.year, in.seed = 4872957)
 
 # Examine flm.results
-list.files(results.path)
+#list.files(results.path)
 ```
