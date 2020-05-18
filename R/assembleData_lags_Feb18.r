@@ -23,7 +23,9 @@ assemble.data.lags = function(pop, cases, NEdat, spi, spei, target.date, start.y
   cases2 <- dplyr::mutate(cases, cases = rnbinom(length(cases), size = 5.129, mu = cases))
   HCcases <- dplyr::left_join(pop, cases2, by = c("County", "year"))
   
-  HCcases[is.na(HCcases)] <- 0
+  # HCcases[is.na(HCcases)] <- 0
+  
+  HCcases <- HCcases[HCcases$year > 2001 & HCcases$year < 2018,]  
   
   # compute cumulative indicence
   
