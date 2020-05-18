@@ -20,7 +20,8 @@ library(flm) # makes it easier to do quality control to have functions readily a
 #**# Moving code from assembleData_lags file
 
 # Read in population data
-pop = flm::NE_county_pops %>% mutate(pop100K = pop/1e5)
+pop = flm::NE_county_pops %>% mutate(pop100K = pop/1e5) %>% 
+  filter(!County == "Arthur") # don't forget to remove arthur county
 # pop <- read.csv("data/NE_county_pops.csv", stringsAsFactors = FALSE)
 
 #Human cases. In this example, cases is the rounded value of the fitted model (i.e. simulated)
