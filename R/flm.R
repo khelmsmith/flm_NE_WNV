@@ -142,7 +142,7 @@ call.flm = function(pop, cases, NEdat, spi, spei, target.date = "2018-02-01",
   
   process.start = Sys.time()
 
-  results <- models_lags(allmods[c(25, 1, 3, 5)], allLagsT, allLagsO, results.path) 
+  results <- models_lags(allmods, allLagsT, allLagsO, results.path) 
 
   message(sprintf("Elapsed Time: %.2f; Process time: %.2f", (Sys.time() - start.time), (Sys.time() - process.start)))
   

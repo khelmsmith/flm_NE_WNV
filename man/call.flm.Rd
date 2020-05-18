@@ -5,7 +5,7 @@
 \title{Main function}
 \usage{
 call.flm(pop, cases, NEdat, spi, spei, target.date = "2018-02-01",
-  start.year = 2002, results.path = "temp/", in.seed = 4872957)
+  start.year = 2002, in.seed = 4872957)
 }
 \arguments{
 \item{pop}{#**# Add documentation}
@@ -22,9 +22,9 @@ call.flm(pop, cases, NEdat, spi, spei, target.date = "2018-02-01",
 
 \item{start.year}{The first year to include in the training data}
 
-\item{results.path}{The path where results will be written}
-
 \item{in.seed}{The starting number for the random number generator. This makes the results repeatable.}
+
+\item{results.path}{The path where results will be written}
 }
 \description{
 Main function

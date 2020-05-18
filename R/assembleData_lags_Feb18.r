@@ -26,10 +26,12 @@ assemble.data.lags = function(pop, cases, NEdat, spi, spei, target.date, start.y
   
   HCcases <- HCcases[HCcases$year > 2001,]  
   
-  # compute cumulative indicence
+  # compute cumulative incidence and lagged cases
   
   HC <- HCcases %>%
     dplyr::group_by(County) %>%
+    mutate(total_cases = sum(cases)) %>% 
+    filter(total_cases > 0) %>% 
       dplyr::mutate(CI = lag(cumsum(cases/pop100K)),
              Lcases = lag(cases)) %>% 
     dplyr::mutate(CI = case_when(is.na(CI)~0,
