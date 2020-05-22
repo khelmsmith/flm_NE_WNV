@@ -3,10 +3,16 @@
 ## Functional linear modeling of West Nile Virus in Nebraska
 
 Simulated case data and actual climate and population covariates used in 
-Helm-Smith, K., et al. (in review) Using climate to explain and predict West Nile Virus risk in Nebraska.
+Smith, K.H., et al. (in review) Using climate to explain and predict West Nile Virus risk in Nebraska.
 Geohealth manuscript 2020GH000244.
 
 [make a pdf preprint with that citation on every page and put in root folder of repository?]
+
+## To download the package
+
+devtools::install.github/khelmsmith/flm_WNV_NE
+
+For how to run it, see NE_WNV.rmd in "Vignettes"
 
 ## Data
 
