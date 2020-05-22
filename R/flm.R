@@ -136,7 +136,9 @@ call.flm = function(pop, cases, NEdat, spi, spei, target.date = "2018-02-01",
   allmods_list <- map(tlag,
                       ~sprintf(models, .x, .x))
   allmods <- flatten(c(list("cases ~ County + year + offset(log(pop100K))",
-                            "cases ~ CI + County + year + offset(log(pop100K))"),
+                            "cases ~ CI + County + year + offset(log(pop100K))",
+                            "cases ~ County + offset(log(pop100K))",
+                            "cases ~ CI + County + offset(log(pop100K))"),
                        allmods_list
                        ))
   
