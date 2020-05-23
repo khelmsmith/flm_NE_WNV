@@ -107,8 +107,13 @@ flm.results[[1]]
 ```
 
 ```{r}
-flm:::extract_functional(flm.results[[3]]$fittedModels[[top]])
-
+dist_lag_terms <- flm:::extract_functional(flm.results[[3]]$fittedModels[[top]]) %>% 
+  mutate(lcl = fit - 1.96*se,
+         ucl = fit + 1.96*se)
+ggplot(data = dist_lag_terms) + 
+  geom_line(mapping = aes(x = x, y = fit)) +
+  geom_ribbon(mapping = aes(x = x, ymin = lcl, ymax = ucl), alpha = 0.2)+
+  facet_wrap(~label)
 ```
 
 
