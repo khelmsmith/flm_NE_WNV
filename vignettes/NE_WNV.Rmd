@@ -107,7 +107,7 @@ flm.results[[1]]
 ```
 
 ```{r}
-flm::extract_functional(mod)
+flm:::extract_functional(flm.results[[3]]$fittedModels[[top]])
 
 ```
 
