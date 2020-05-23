@@ -8,13 +8,22 @@ Geohealth manuscript 2020GH000244.
 
 [make a pdf preprint with that citation on every page and put in root folder of repository?]
 
-## To download the package
+## To install the package
 
-devtools::install.github/khelmsmith/flm_WNV_NE
+```r
+devtools::install_github("khelmsmith/flm_WNV_NE")
+```
 
-For how to run it, see NE_WNV.rmd in "Vignettes"
+For how to run it, see NE_WNV.rmd in "Vignettes" on the repository. If you want
+to have the vignette locally, use 
 
-## Data
+```r
+devtools::install_github("khelmsmith/flm_WNV_NE", build_vignettes = TRUE)
+```
+
+but keep in mind that this takes about 45 minutes on a modern laptop.
+
+## Data Sources
 
 NE_county_pops.csv is Nebraska County populations, 2000-2018, from the U.S. Census Bureau, using annual estimates
 
