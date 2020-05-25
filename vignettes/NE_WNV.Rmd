@@ -82,7 +82,7 @@ allLagsT %>% group_by(year) %>%
 
 This chunk assembles data and runs models, using all combinations of 12, 18, 24, 30 and 36 months of lagged data for mean temperature, precipitation, SPI and SPEI.
 
-Note: It takes a while to run all the models, about 45 minutes on a 2015 13" MacBook Pro. 
+Note: It takes a while to run all the models, about 4 hours on an up-to-date desktop.
 
 ```{r flm}
 

@@ -109,6 +109,7 @@ NULL
 call.flm = function(pop, cases, NEdat, spi, spei, target.date = "2018-02-01",
                     start.year = 2002, in.seed = 4872957){
 
+  in.seed = 4872957
   # Assemble data lags
   message("Assembling Data")
   start.time = Sys.time()
@@ -124,49 +125,49 @@ call.flm = function(pop, cases, NEdat, spi, spei, target.date = "2018-02-01",
   tlag = c(12, 18, 24, 30, 36)
   
   models <- c("cases ~ s(lags_tmean%d, by=tmean%d) + County + year + offset(log(pop100K))",
-              "cases ~ s(lags_tmean%d, by=tmean%d) + CI + County + year + offset(log(pop100K))",
+               "cases ~ s(lags_tmean%d, by=tmean%d) + CI + County + year + offset(log(pop100K))",
+     
+               "cases ~ s(lags_ppt%d, by=ppt%d) + County + year + offset(log(pop100K))",
+               "cases ~ s(lags_ppt%d, by=ppt%d) + CI + County + year + offset(log(pop100K))",
+     
+               "cases ~ s(lags_spi%d, by=spi%d) + County + year + offset(log(pop100K))",
+               "cases ~ s(lags_spi%d, by=spi%d) + CI + County + year + offset(log(pop100K))",
+     
+         "cases ~ s(lags_spei%d, by=spei%d) + County + year + offset(log(pop100K))",
+             "cases ~ s(lags_spei%d, by=spei%d) + CI + County + year + offset(log(pop100K))",
 
-              "cases ~ s(lags_ppt%d, by=ppt%d) + County + year + offset(log(pop100K))",
-              "cases ~ s(lags_ppt%d, by=ppt%d) + CI + County + year + offset(log(pop100K))",
-
-              "cases ~ s(lags_spi%d, by=spi%d) + County + year + offset(log(pop100K))",
-              "cases ~ s(lags_spi%d, by=spi%d) + CI + County + year + offset(log(pop100K))",
-
-              "cases ~ s(lags_spei%d, by=spei%d) + County + year + offset(log(pop100K))",
-              "cases ~ s(lags_spei%d, by=spei%d) + CI + County + year + offset(log(pop100K))",
-
-              "cases ~ s(lags_tmean%d, by=tmean%d) + County + offset(log(pop100K))",
-                "cases ~ s(lags_tmean%d, by=tmean%d) + CI + County + offset(log(pop100K))",
-
-                "cases ~ s(lags_ppt%d, by=ppt%d) + County + offset(log(pop100K))",
-                "cases ~ s(lags_ppt%d, by=ppt%d) + CI + County + offset(log(pop100K))",
-
-                "cases ~ s(lags_spi%d, by=spi%d) + County + offset(log(pop100K))",
-                "cases ~ s(lags_spi%d, by=spi%d) + CI + County + offset(log(pop100K))",
-
-                "cases ~ s(lags_spei%d, by=spei%d) + County + offset(log(pop100K))",
+             "cases ~ s(lags_tmean%d, by=tmean%d) + County + offset(log(pop100K))",
+               "cases ~ s(lags_tmean%d, by=tmean%d) + CI + County + offset(log(pop100K))",
+               
+               "cases ~ s(lags_ppt%d, by=ppt%d) + County + offset(log(pop100K))",
+               "cases ~ s(lags_ppt%d, by=ppt%d) + CI + County + offset(log(pop100K))",
+               
+               "cases ~ s(lags_spi%d, by=spi%d) + County + offset(log(pop100K))",
+               "cases ~ s(lags_spi%d, by=spi%d) + CI + County + offset(log(pop100K))",
+                 
+                 "cases ~ s(lags_spei%d, by=spei%d) + County + offset(log(pop100K))",
                 "cases ~ s(lags_spei%d, by=spei%d) + CI + County + offset(log(pop100K))")
   
   allmods_list <- map(tlag,
                       ~sprintf(models, .x, .x))
   
   models <- c("cases ~ s(lags_tmean%d, by=tmean%d) + s(lags_ppt%d, by=ppt%d) + County + year + offset(log(pop100K))",
-              "cases ~ s(lags_tmean%d, by=tmean%d) + s(lags_ppt%d, by=ppt%d) + CI + County + year + offset(log(pop100K))",
-
+               "cases ~ s(lags_tmean%d, by=tmean%d) + s(lags_ppt%d, by=ppt%d) + CI + County + year + offset(log(pop100K))",
+     
               "cases ~ s(lags_tmean%d, by=tmean%d) + s(lags_spi%d, by=spi%d) + County + year + offset(log(pop100K))",
-              "cases ~ s(lags_tmean%d, by=tmean%d) + s(lags_spi%d, by=spi%d) + CI + County + year + offset(log(pop100K))",
-
-              "cases ~ s(lags_tmean%d, by=tmean%d) + s(lags_spei%d, by=spei%d) + County + year + offset(log(pop100K))",
-              "cases ~ s(lags_tmean%d, by=tmean%d) + s(lags_spei%d, by=spei%d) + CI + County + year + offset(log(pop100K))",
+             "cases ~ s(lags_tmean%d, by=tmean%d) + s(lags_spi%d, by=spi%d) + CI + County + year + offset(log(pop100K))",
+     
+             "cases ~ s(lags_tmean%d, by=tmean%d) + s(lags_spei%d, by=spei%d) + County + year + offset(log(pop100K))",
+             "cases ~ s(lags_tmean%d, by=tmean%d) + s(lags_spei%d, by=spei%d) + CI + County + year + offset(log(pop100K))",
 
               "cases ~ s(lags_tmean%d, by=tmean%d) + s(lags_ppt%d, by=ppt%d) + County + offset(log(pop100K))",
-              "cases ~ s(lags_tmean%d, by=tmean%d) + s(lags_ppt%d, by=ppt%d) + CI + County + offset(log(pop100K))",
-
-              "cases ~ s(lags_tmean%d, by=tmean%d) + s(lags_spi%d, by=spi%d) + County + offset(log(pop100K))",
-              "cases ~ s(lags_tmean%d, by=tmean%d) + s(lags_spi%d, by=spi%d) + CI + County + offset(log(pop100K))",
-
-              "cases ~ s(lags_tmean%d, by=tmean%d) + s(lags_spei%d, by=spei%d) + County + offset(log(pop100K))",
-              "cases ~ s(lags_tmean%d, by=tmean%d) + s(lags_spei%d, by=spei%d) + CI + County + offset(log(pop100K))")
+               "cases ~ s(lags_tmean%d, by=tmean%d) + s(lags_ppt%d, by=ppt%d) + CI + County + offset(log(pop100K))",
+               
+               "cases ~ s(lags_tmean%d, by=tmean%d) + s(lags_spi%d, by=spi%d) + County + offset(log(pop100K))",
+               "cases ~ s(lags_tmean%d, by=tmean%d) + s(lags_spi%d, by=spi%d) + CI + County + offset(log(pop100K))",
+               
+               "cases ~ s(lags_tmean%d, by=tmean%d) + s(lags_spei%d, by=spei%d) + County + offset(log(pop100K))",
+             "cases ~ s(lags_tmean%d, by=tmean%d) + s(lags_spei%d, by=spei%d) + CI + County + offset(log(pop100K))")
   
   lag_combinations <- crossing(tlag = c(12, 18, 24, 30, 36), slag = seq(12, 36, 6))
   
@@ -176,7 +177,7 @@ call.flm = function(pop, cases, NEdat, spi, spei, target.date = "2018-02-01",
   allmods <- flatten(c(list("cases ~ County + year + offset(log(pop100K))",
                             "cases ~ CI + County + year + offset(log(pop100K))",
                             "cases ~ County + offset(log(pop100K))",
-                            "cases ~ CI + County + offset(log(pop100K))"),
+                            "cases ~ CI + County + offset(log(pop100K))"                          ),
                        allmods_list, allmods_list2
                        ))
   

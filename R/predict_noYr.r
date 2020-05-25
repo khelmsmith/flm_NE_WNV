@@ -3,14 +3,10 @@
 #' @param allLagsT The assembled data set to use for training
 #' @param allLagsO The assembled data set to use for out-of-sample prediction
 #' 
-predict_noYr = function(allLagsT, allLagsO){
+predict_noYr = function(fittedModel, allLagsT, allLagsO){
 
   # plug in model formula here
-  modform <- cases ~ s(lags_tmean12, by = tmean12) + s(lags_ppt12, by = ppt12) + CI + County + offset(log(pop100K))
-  
-  mod <- gam(modform, data=allLagsT, family=nb())
-  
-  modsum <- summary(mod)
+  modform <- formula(fittedModel)
   
   # predict for years included in training data
   
@@ -35,7 +31,7 @@ predict_noYr = function(allLagsT, allLagsO){
   
   # predict for out-of-sample data
   
-  predsO <- predict(mod, newdata=allLagsO, type = "link", se=TRUE)
+  predsO <- predict(fittedModel, newdata=allLagsO, type = "link", se=TRUE)
   allLagsO$fit <- predsO[[1]]
   allLagsO$se <- predsO[[2]]
   allLagsO <- allLagsO[,c("County", "year", "cases", "Lcases", "fit", "se")]
@@ -46,5 +42,5 @@ predict_noYr = function(allLagsT, allLagsO){
   
   allIndepData <- dplyr::mutate(allIndepData, pred = exp(fit))
 
-  return(list(allIndepData, mod))
+  return(allLagsO)
 }
