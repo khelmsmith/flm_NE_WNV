@@ -16,14 +16,13 @@ models_lags = function(allmods, allLagsT, allLagsO, results.path){
   AICfits <- map_dbl(allfits, MuMIn::AICc)
   best <- which.min(AICfits)
   form <- Reduce(paste, deparse(allfits[[best]]$formula[3]))
-  newthing <- length(allfits) + 1
-  allfits[[newthing]] <- ifelse (grepl("year", form), 1, 0)
-  if (allfits[[newthing]] == 1){
-    preds <- predict_wYr(allfits[[best]], allLagsT, allLagsO)
-  } else if (allfits[[newthing]] == 0) {
+  
+ if (grepl("year", form) == TRUE )
+{ preds <- predict_wYr(allfits[[best]], allLagsT, allLagsO)
+  } else if (grepl("year", form) == FALSE ) {
     preds <- predict_noYr(allfits[[best]], allLagsT, allLagsO)
   }
- # preds <- predict_wYr(allfits[[best]], allLagsT, allLagsO)
+
   return(list(predictions= preds,
               other = list(fittedModels=allfits,
                            AICfits = AICfits,
