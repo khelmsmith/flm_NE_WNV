@@ -82,12 +82,14 @@ allLagsT %>% group_by(year) %>%
 
 This chunk assembles data and runs models, using all combinations of 12, 18, 24, 30 and 36 months of lagged data for mean temperature, precipitation, SPI and SPEI.
 
-Note: It takes a while to run all the models, about 4 hours on an up-to-date desktop.
+Note: It takes about 25 minutes to run all the models.
 
 ```{r flm}
 
 #**# Turned off function call while checking that the package loads
 flm.results = flm::call.flm(pop, cases, NEdat, spi, spei, target.date, start.year, in.seed = 4872957)
+
+Sys.time()
 
 # Examine flm.results
 # list.files(results.path)

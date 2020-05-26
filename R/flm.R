@@ -143,8 +143,8 @@ call.flm = function(pop, cases, NEdat, spi, spei, target.date = "2018-02-01",
 
           "cases ~ s(lags_spi%d, by=spi%d) + County + offset(log(pop100K))",
           "cases ~ s(lags_spi%d, by=spi%d) + CI + County + offset(log(pop100K))",
-         #         
-         #         "cases ~ s(lags_spei%d, by=spei%d) + County + offset(log(pop100K))",
+                  
+                 "cases ~ s(lags_spei%d, by=spei%d) + County + offset(log(pop100K))",
                 "cases ~ s(lags_spei%d, by=spei%d) + CI + County + offset(log(pop100K))")
   
   allmods_list <- map(tlag,
