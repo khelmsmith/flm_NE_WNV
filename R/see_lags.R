@@ -1,6 +1,7 @@
-#' See Lags
+#' See lags
 #' 
 #' @param mod A model object created by call.flm
+#' @param results.path File path for output
 #' 
 see.lags = function(mod, results.path){
 

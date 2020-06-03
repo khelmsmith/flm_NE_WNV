@@ -4,9 +4,11 @@
 \alias{predict_noYr}
 \title{Predict data without using year}
 \usage{
-predict_noYr(allLagsT, allLagsO)
+predict_noYr(fittedModel, allLagsT, allLagsO)
 }
 \arguments{
+\item{fittedModel}{Model to predict from}
+
 \item{allLagsT}{The assembled data set to use for training}
 
 \item{allLagsO}{The assembled data set to use for out-of-sample prediction}

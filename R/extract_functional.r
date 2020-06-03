@@ -1,11 +1,15 @@
-
+#' Extract coefficients for functional lags
+#'
+#' @param x is a fitted gam() with m >= 1 linear functional terms
+#' @param se logical TRUE says to return the SE estimate as well
+#' @param select allows restricting which functional term is returned; default is all
+#' @param scale may be vestigial
+#'
+#' @return returns a data.frame with columns term, lag, coef, se 
+#' @export
+#'
 extract_functional <- function (x, se = TRUE, select = NULL, scale = -1) 
 {
-  ## x is a fitted gam() with m >= 1 linear functional terms
-  ## se = TRUE says to return the SE estimate as well
-  ## select allows restricting which functional term is 
-  ## returned; default is all
-  ## returns a data.frame with columns term, lag, coef, se 
   m <- length(x$smooth)
   if (is.null(select)){
     select <- 1:m

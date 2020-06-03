@@ -1,4 +1,12 @@
-# function from Teller 2016 (doi 10.1111/2041-210X.12486) to aggregate data by month
+#' Function from Teller 2016 (doi 10.1111/2041-210X.12486) to create distributed lags of monthly data
+#'
+#' @param datC a dataframe of monthly values of environmental variables
+#' @param fun lag
+#' @param meas how many months to go back
+#' @param seg month
+#'
+#' @return a matrix of lagged values of an environmental variable
+#' @export
 
 aggLags<-function(datC, fun, meas, seg){
   pars <- as.list(match.call()[-1])

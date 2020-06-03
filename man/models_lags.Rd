@@ -2,19 +2,22 @@
 % Please edit documentation in R/WNV_models_lags.r
 \name{models_lags}
 \alias{models_lags}
-\title{fits the models to training data and generates the predictions.}
+\title{Fits the models to training data and generates the predictions}
 \usage{
-models_lags(models, allLagsT, allLagsO, results.path)
+models_lags(allmods, allLagsT, allLagsO, results.path)
 }
 \arguments{
-\item{models}{}
+\item{allmods}{List of models}
 
-\item{allLagsT}{}
+\item{allLagsT}{Training data}
 
-\item{allLagsO}{}
+\item{allLagsO}{Out-of-sample data}
 
-\item{results.path}{}
+\item{results.path}{where results are written}
+}
+\value{
+Returns predictions for the out-of-sample year, a list of fitted models, AIC scores, and the model with the lowest AIC score
 }
 \description{
-fits the models to training data and generates the predictions.
+Fits the models to training data and generates the predictions
 }

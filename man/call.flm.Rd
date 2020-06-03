@@ -4,27 +4,33 @@
 \alias{call.flm}
 \title{Main function}
 \usage{
-call.flm(pop, cases, NEdat, spi, spei, target.date = "2018-02-01",
-  start.year = 2002, in.seed = 4872957)
+call.flm(
+  pop,
+  cases,
+  NEdat,
+  spi,
+  spei,
+  target.date = "2018-02-01",
+  start.year = 2002,
+  in.seed = 4872957
+)
 }
 \arguments{
-\item{pop}{#**# Add documentation}
+\item{pop}{Nebraska County populations, 2000-2018, from the U.S. Census Bureau, using annual estimates}
 
-\item{cases}{#**# Add documentation}
+\item{cases}{simulated data on annual numbers of human cases of neuro-invasive and non-neuro-invasive West Nile Virus in Nebraska counties. It is predictions of a model that was trained on actual numbers of cases as recorded in CDC's Arbonet database. It excludes Arthur County, because no cases have been recorded there to date, and we had to exclude it from our modeling to get it to work.}
 
-\item{NEdat}{#**# Add documentation}
+\item{NEdat}{temperature and precipitation data for Nebraska counties each month from January 1998 to February 2019 from the National Centers for Environmental Information, National Climatic Data Center (ftp://ftp.ncdc.noaa.gov/pub/data/cirs/climdiv/)}
 
-\item{spi}{#**# Add documentation}
+\item{spi}{extracted monthly values of the Standardized Precipitation Index for Nebraska counties, from Westwide Drought Tracker netcdf files. See Abatzoglou, J. T., McEvoy, D. J., & Redmond, K. T. (2017). The West Wide Drought Tracker: Drought monitoring at fine spatial scales. Bulletin of the American Meteorological Society, 98(9), 1815–1820. https://doi.org/10.1175/BAMS-D-16-0193.1}
 
-\item{spei}{#**# Add documentation}
+\item{spei}{extracted monthly values of the Standardized Precipitation and Evapotranspiration Index for Nebraska counties, from Westwide Drought Tracker netcdf files. See Abatzoglou, J. T., McEvoy, D. J., & Redmond, K. T. (2017). The West Wide Drought Tracker: Drought monitoring at fine spatial scales. Bulletin of the American Meteorological Society, 98(9), 1815–1820. https://doi.org/10.1175/BAMS-D-16-0193.1}
 
 \item{target.date}{The last date to include for calculation of lags}
 
 \item{start.year}{The first year to include in the training data}
 
 \item{in.seed}{The starting number for the random number generator. This makes the results repeatable.}
-
-\item{results.path}{The path where results will be written}
 }
 \description{
 Main function

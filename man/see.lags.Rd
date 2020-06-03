@@ -2,13 +2,15 @@
 % Please edit documentation in R/see_lags.R
 \name{see.lags}
 \alias{see.lags}
-\title{See Lags}
+\title{See lags}
 \usage{
 see.lags(mod, results.path)
 }
 \arguments{
 \item{mod}{A model object created by call.flm}
+
+\item{results.path}{File path for output}
 }
 \description{
-See Lags
+See lags
 }

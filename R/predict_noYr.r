@@ -2,6 +2,7 @@
 #' 
 #' @param allLagsT The assembled data set to use for training
 #' @param allLagsO The assembled data set to use for out-of-sample prediction
+#' @param fittedModel Model to predict from
 #' 
 predict_noYr = function(fittedModel, allLagsT, allLagsO){
 
