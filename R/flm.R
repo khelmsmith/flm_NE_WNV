@@ -104,10 +104,11 @@ NULL
 #' @param target.date The last date to include for calculation of lags
 #' @param start.year The first year to include in the training data
 #' @param in.seed The starting number for the random number generator. This makes the results repeatable.
+#' @param lag.lengths vector of months to lag backwards for environmental variables.
 #'
 #' @export
 call.flm = function(pop, cases, NEdat, spi, spei, target.date = "2018-02-01",
-                    start.year = 2002, in.seed = 4872957){
+                    start.year = 2002, in.seed = 4872957, lag.lengths = c(12, 24)){
 
   # Assemble data lags
   message("Assembling Data")
@@ -120,8 +121,6 @@ call.flm = function(pop, cases, NEdat, spi, spei, target.date = "2018-02-01",
   
   # Compare models with and without lags
   message("Comparing models with and without lags")
-
-  tlag = c(12, 18, 24, 30, 36)
 
   models <- c("cases ~ s(lags_tmean%d, by=tmean%d) + County + year + offset(log(pop100K))",
           "cases ~ s(lags_tmean%d, by=tmean%d) + CI + County + year + offset(log(pop100K))",
@@ -147,7 +146,7 @@ call.flm = function(pop, cases, NEdat, spi, spei, target.date = "2018-02-01",
                  "cases ~ s(lags_spei%d, by=spei%d) + County + offset(log(pop100K))",
                 "cases ~ s(lags_spei%d, by=spei%d) + CI + County + offset(log(pop100K))")
   
-  allmods_list <- map(tlag,
+  allmods_list <- map(lag.lengths,
                       ~sprintf(models, .x, .x))
   
   models <- c("cases ~ s(lags_tmean%d, by=tmean%d) + s(lags_ppt%d, by=ppt%d) + County + year + offset(log(pop100K))",
@@ -168,7 +167,7 @@ call.flm = function(pop, cases, NEdat, spi, spei, target.date = "2018-02-01",
       "cases ~ s(lags_tmean%d, by=tmean%d) + s(lags_spei%d, by=spei%d) + County + offset(log(pop100K))",
              "cases ~ s(lags_tmean%d, by=tmean%d) + s(lags_spei%d, by=spei%d) + CI + County + offset(log(pop100K))")
   
-  lag_combinations <- crossing(tlag = c(12, 18, 24, 30, 36), slag = seq(12, 36, 6))
+  lag_combinations <- crossing(tlag = lag.lengths, slag = lag.lengths)
   
   allmods_list2 <- map2(lag_combinations$tlag, lag_combinations$slag,
                        ~sprintf(models, .x, .x, .y, .y))

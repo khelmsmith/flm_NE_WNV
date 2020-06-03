@@ -3,6 +3,7 @@
 \docType{package}
 \name{flm}
 \alias{flm}
+\alias{flm-package}
 \title{Functional Linear Modeling for Vector-borne Disease}
 \description{
 Use functional linear modeling statistical approach to predict mosquito-borne disease.

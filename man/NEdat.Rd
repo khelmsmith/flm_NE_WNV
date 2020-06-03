@@ -4,9 +4,7 @@
 \name{NEdat}
 \alias{NEdat}
 \title{NEdat}
-\format{
-An object of class \code{data.frame} with 23622 rows and 5 columns.
-}
+\format{An object of class \code{data.frame} with 23622 rows and 5 columns.}
 \source{
 ftp://ftp.ncdc.noaa.gov/pub/data/cirs/climdiv/
 }

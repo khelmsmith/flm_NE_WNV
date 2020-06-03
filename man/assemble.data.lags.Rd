@@ -4,16 +4,8 @@
 \alias{assemble.data.lags}
 \title{Assemble human case data and environmental lags}
 \usage{
-assemble.data.lags(
-  pop,
-  cases,
-  NEdat,
-  spi,
-  spei,
-  target.date,
-  start.year,
-  in.seed
-)
+assemble.data.lags(pop, cases, NEdat, spi, spei, target.date, start.year,
+  in.seed, lag.lengths = c(12, 24))
 }
 \arguments{
 \item{pop}{Nebraska County populations, 2000-2018, from the U.S. Census Bureau, using annual estimates}
@@ -31,6 +23,8 @@ assemble.data.lags(
 \item{start.year}{The first year to include in the training data}
 
 \item{in.seed}{The starting number for the random number generator. This makes the results repeatable.}
+
+\item{lag.lengths}{the number of months to go backwards when creating lag matrices}
 }
 \description{
 Assemble human case data and environmental lags

@@ -4,9 +4,7 @@
 \name{NE_county_pops}
 \alias{NE_county_pops}
 \title{NE_county_pops}
-\format{
-An object of class \code{data.frame} with 1767 rows and 4 columns.
-}
+\format{An object of class \code{data.frame} with 1767 rows and 4 columns.}
 \usage{
 NE_county_pops
 }

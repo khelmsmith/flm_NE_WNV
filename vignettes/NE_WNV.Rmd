@@ -55,7 +55,7 @@ Our approach struggles if there are counties with no cases.
 
 ```{r}
 data <- assemble.data.lags(pop, cases, NEdat, spi, spei, 
-                           target.date = "2018-02-02", start.year = 2002, in.seed = 4872957)
+                           target.date = "2018-02-02", start.year = 2002, in.seed = 4872957, lag.lengths = 12)
 allLagsT <- data[[1]] # 2004 - 2017
 allLags0 <- data[[2]]
 # how many counties lack cases?
@@ -87,9 +87,8 @@ Note: It takes about 25 minutes to run all the models.
 ```{r flm}
 
 #**# Turned off function call while checking that the package loads
-flm.results = flm::call.flm(pop, cases, NEdat, spi, spei, target.date, start.year, in.seed = 4872957)
+flm.results = flm::call.flm(pop, cases, NEdat, spi, spei, target.date, start.year, in.seed = 4872957, lag.lengths = 12)
 
-Sys.time()
 
 # Examine flm.results
 # list.files(results.path)

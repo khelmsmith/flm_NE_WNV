@@ -4,16 +4,8 @@
 \alias{call.flm}
 \title{Main function}
 \usage{
-call.flm(
-  pop,
-  cases,
-  NEdat,
-  spi,
-  spei,
-  target.date = "2018-02-01",
-  start.year = 2002,
-  in.seed = 4872957
-)
+call.flm(pop, cases, NEdat, spi, spei, target.date = "2018-02-01",
+  start.year = 2002, in.seed = 4872957, lag.lengths = c(12, 24))
 }
 \arguments{
 \item{pop}{Nebraska County populations, 2000-2018, from the U.S. Census Bureau, using annual estimates}
@@ -31,6 +23,8 @@ call.flm(
 \item{start.year}{The first year to include in the training data}
 
 \item{in.seed}{The starting number for the random number generator. This makes the results repeatable.}
+
+\item{lag.lengths}{vector of months to lag backwards for environmental variables.}
 }
 \description{
 Main function

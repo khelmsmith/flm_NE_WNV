@@ -8,8 +8,10 @@
 #' @param target.date The last date to include for calculation of lags
 #' @param start.year The first year to include in the training data
 #' @param in.seed The starting number for the random number generator. This makes the results repeatable.
+#' @param lag.lengths the number of months to go backwards when creating lag matrices
 #' @export
-assemble.data.lags = function(pop, cases, NEdat, spi, spei, target.date, start.year, in.seed){
+assemble.data.lags = function(pop, cases, NEdat, spi, spei, target.date, start.year, in.seed,
+                              lag.lengths = c(12, 24)){
   
   # Identify starting month #**# Should this be an input, or is it best to use the month from the target date?
   start.month = as.numeric(strsplit(target.date, '-')[[1]][2])
@@ -92,11 +94,10 @@ assemble.data.lags = function(pop, cases, NEdat, spi, spei, target.date, start.y
   
   #Fully automated lag-looping 
   
-  #enter the number of months of lags that you'd like to make
-  lagLengths <- c(12, 18, 24, 30, 36) #**# Should this be an optional input?
+
   #enter the number of different lags you are making
-  listOfLagLengths <- vector("list", length = 5)
-  names(listOfLagLengths) <- lagLengths
+  listOfLagLengths <- vector("list", length = length(lag.lengths))
+  names(listOfLagLengths) <- lag.lengths
   
   #enter the number of variables you are lagging
   listofVars <- vector("list", length=4) #as length
@@ -108,7 +109,7 @@ assemble.data.lags = function(pop, cases, NEdat, spi, spei, target.date, start.y
   
   
   for (j in seq_along(listOfLagLengths)) {
-    nUnits <- lagLengths[[j]]
+    nUnits <- lag.lengths[[j]]
     
     #spi lags
     for (i in seq_along(lagnames)) {
