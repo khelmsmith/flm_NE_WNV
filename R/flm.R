@@ -108,7 +108,7 @@ NULL
 #'
 #' @export
 call.flm = function(pop, cases, NEdat, spi, spei, target.date = "2018-02-01",
-                    start.year = 2002, in.seed = 4872957, lag.lengths = c(12, 24)){
+                    start.year = 2002, in.seed = 4872957, lag.lengths = c(12, 18, 24, 30, 36)){
 
   # Assemble data lags
   message("Assembling Data")
@@ -142,7 +142,7 @@ call.flm = function(pop, cases, NEdat, spi, spei, target.date = "2018-02-01",
 
           "cases ~ s(lags_spi%d, by=spi%d) + County + offset(log(pop100K))",
           "cases ~ s(lags_spi%d, by=spi%d) + CI + County + offset(log(pop100K))",
-                  
+
                  "cases ~ s(lags_spei%d, by=spei%d) + County + offset(log(pop100K))",
                 "cases ~ s(lags_spei%d, by=spei%d) + CI + County + offset(log(pop100K))")
   

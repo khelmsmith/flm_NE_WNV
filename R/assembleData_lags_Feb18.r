@@ -11,7 +11,7 @@
 #' @param lag.lengths the number of months to go backwards when creating lag matrices
 #' @export
 assemble.data.lags = function(pop, cases, NEdat, spi, spei, target.date, start.year, in.seed,
-                              lag.lengths = c(12, 24)){
+                              lag.lengths = c(12, 18, 24, 30, 36)){
   
   # Identify starting month #**# Should this be an input, or is it best to use the month from the target date?
   start.month = as.numeric(strsplit(target.date, '-')[[1]][2])
@@ -118,7 +118,7 @@ assemble.data.lags = function(pop, cases, NEdat, spi, spei, target.date, start.y
       dry.i <- select(spi.i, year, month, spi) 
       HC.i <- filter(HC, County == County.i)
       HC.i <- select(HC.i, County, year, cases, Lcases, CI, pop100K) 
-      lags.i <- makeDat(dry.i, HC.i, start.month, "spi", nUnits) #the "2" means "February. Pick your start month.
+      lags.i <- makeDat(dry.i, HC.i, start.month, "spi", nUnits) #the "2" means "February. Currently generated from target.date.
       lags.i$County <- County.i 
       listOfLags[[i]] <- lags.i 
     }
@@ -136,7 +136,7 @@ assemble.data.lags = function(pop, cases, NEdat, spi, spei, target.date, start.y
       dry.i <- dplyr::select(spei.i, year, month, spei) 
       HC.i <- dplyr::filter(HC, County == County.i)
       HC.i <- dplyr::select(HC.i, County, year, cases, Lcases, CI, pop100K) 
-      lags.i <- makeDat(dry.i, HC.i, start.month, "spei", nUnits) #the "2" means "February. Pick your start month.
+      lags.i <- makeDat(dry.i, HC.i, start.month, "spei", nUnits) #the "2" means "February. Currently generated from target.date.
       lags.i$County <- County.i 
       listOfLags[[i]] <- lags.i 
     }

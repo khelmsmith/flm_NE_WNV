@@ -4,8 +4,17 @@
 \alias{assemble.data.lags}
 \title{Assemble human case data and environmental lags}
 \usage{
-assemble.data.lags(pop, cases, NEdat, spi, spei, target.date, start.year,
-  in.seed, lag.lengths = c(12, 24))
+assemble.data.lags(
+  pop,
+  cases,
+  NEdat,
+  spi,
+  spei,
+  target.date,
+  start.year,
+  in.seed,
+  lag.lengths = c(12, 18, 24, 30, 36)
+)
 }
 \arguments{
 \item{pop}{Nebraska County populations, 2000-2018, from the U.S. Census Bureau, using annual estimates}

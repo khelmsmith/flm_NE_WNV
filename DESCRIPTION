@@ -2,12 +2,14 @@ Package: flm
 Type: Package
 Title: Functional Linear Modeling For Vector-borne Disease
 Version: 0.1.0
-Authors@R: c(person("Kelly", "Smith", role = c("aut", "cre"),
+Authors@R: c(person("Kelly Helm", "Smith", role = c("aut", "cre"),
            email = "ksmith2@unl.edu"), person("Andrew", "Tyre",
-           role = c("aut"), email = "atyre2@unl.edu"))
-Author: Kelly Smith <ksmith2@unl.edu>,
+           role = c("aut"), email = "atyre2@unl.edu"), 
+           person("Alexander "Sasha"","Keyel", role = c("ctb"), 
+           email = "skeyel@gmail.com"))
+Author: Kelly Helm Smith <ksmith2@unl.edu>,
         Andrew Tyre <atyre2@unl.edu>
-Maintainer: Kelly Smith <ksmith2@unl.edu>
+Maintainer: Kelly Helm Smith <ksmith2@unl.edu>
 Description: Model future West Nile virus risk. The model uses a functional
 	linear modeling approach with drought, temperature, humidity,
 	and human population data as inputs to forecast risk of vector-borne

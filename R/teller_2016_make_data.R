@@ -1,12 +1,4 @@
 #' Function from Teller 2016 (doi 10.1111/2041-210X.12486) to create distributed lags of monthly data
-#'
-#' @param datC a dataframe of monthly values of environmental variables
-#' @param fun lag
-#' @param meas how many months to go back
-#' @param seg month
-#'
-#' @return a matrix of lagged values of an environmental variable
-#' @export
 
 aggLags<-function(datC, fun, meas, seg){
   pars <- as.list(match.call()[-1])
@@ -34,6 +26,17 @@ appLags<-function(agDatC, nUnits, name, fun){
 }
 
 # now put it all together
+#' Assemble data with lagged environmental predictors
+#'
+#' @param envData values of environmental data, in this case, by month and county
+#' @param response the response variable, human cases of WNV
+#' @param monthStart the month from which to lag the environmental data back
+#' @param meas month
+#' @param nUnits how many units (meas) to go back
+#'
+#' @return a matrix of lagged environmental variables
+#' @export
+
 makeDat = function(envData, response, monthStart, meas, nUnits){
 
   # aggregates data to longer segments (e.g. daily -> monthly)

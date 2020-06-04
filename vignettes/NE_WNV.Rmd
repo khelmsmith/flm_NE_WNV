@@ -84,14 +84,11 @@ This chunk assembles data and runs models, using all combinations of 12, 18, 24,
 
 Note: It takes about 25 minutes to run all the models.
 
+
 ```{r flm}
 
-#**# Turned off function call while checking that the package loads
-flm.results = flm::call.flm(pop, cases, NEdat, spi, spei, target.date, start.year, in.seed = 4872957, lag.lengths = 12)
+flm.results = flm::call.flm(pop, cases, NEdat, spi, spei, target.date, start.year, in.seed = 4872957, lag.lengths = c(12, 18, 24, 30, 36))
 
-
-# Examine flm.results
-# list.files(results.path)
 ```
 
 ## Overview of model chosen by AIC 

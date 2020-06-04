@@ -4,7 +4,9 @@
 \name{spei}
 \alias{spei}
 \title{spei}
-\format{An object of class \code{data.frame} with 24552 rows and 4 columns.}
+\format{
+An object of class \code{data.frame} with 24552 rows and 4 columns.
+}
 \usage{
 spei
 }

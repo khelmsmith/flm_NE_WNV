@@ -6,18 +6,6 @@
 \usage{
 aggLags(datC, fun, meas, seg)
 }
-\arguments{
-\item{datC}{a dataframe of monthly values of environmental variables}
-
-\item{fun}{lag}
-
-\item{meas}{how many months to go back}
-
-\item{seg}{month}
-}
-\value{
-a matrix of lagged values of an environmental variable
-}
 \description{
 Function from Teller 2016 (doi 10.1111/2041-210X.12486) to create distributed lags of monthly data
 }
