@@ -35,18 +35,16 @@ NEco_spei1_2019-12-15.csv and NEco_spi1_2019-12-15.csv are extracted monthly val
 
 ## Code
 
-*assembleData_lags_Feb18.r* brings together data on population, human cases, temperature, precipitation, and Standardized Precipitation (and Evapotranspiration) indices, and generates lags of predictors. Note that this is based on "what would we have known in Feb. 2018?" so data is trimmed to Feb. 2018. You can change the number of months of lags, the number of lags, and the starting month of lags. Places to do this are indicated in comments in the code. Output is a dataframe called "allLagsT", with training data, 2002-2017, and a dataframe called "allLagsO", with out-of-sample data, 2018. It is sourced in flm.R. 
+*assemble.data.lags* brings together data on population, human cases, temperature, precipitation, and Standardized Precipitation (and Evapotranspiration) indices, and generates lags of predictors. Note that this is based on "what would we have known in Feb. 2018?" so data is trimmed to Feb. 2018. Output is a dataframe called "allLagsT", with training data, 2002-2017, and a dataframe called "allLagsO", with out-of-sample data, 2018. It is sourced in flm. 
 
-*makeDat.r* creates lags of variables and is sourced into the `assembleData_lags_Feb18.r`. It is adapted from supplemental material published with Teller, B. J., Adler, P. B., Edwards, C. B., Hooker, G., & Ellner, S. P. (2016). Linking demography with drivers: Climate and competition. Methods in Ecology and Evolution, 7(2), 171–183. https://doi.org/10.1111/2041-210X.12486
+*makeDat* creates lags of variables and is part of the data assembly function. It is adapted from supplemental material published with Teller, B. J., Adler, P. B., Edwards, C. B., Hooker, G., & Ellner, S. P. (2016). Linking demography with drivers: Climate and competition. Methods in Ecology and Evolution, 7(2), 171–183. https://doi.org/10.1111/2041-210X.12486
 
-*flm.R* lists all combinations of predictors as model formulae, including lags of precipitation, temperature, SPI and SPEI distributed across 12, 18, 24, 30 and 36 months; cumulative incidence; and contrast coefficients for county and year. Different lag lengths can be specified on lines 124 and 171.  
+*call.flm* lists all combinations of predictors as model formulae, including lags of precipitation, temperature, SPI and SPEI distributed across different time intervals; cumulative incidence; and contrast coefficients for county and year; fits models; determines which model has the lowest AIC score; and uses the best model to generate out-of-sample predictions.  
 
-*WNV_models_lags.r* Fits a list of models to training data and generates the predictions 
+*models_lags* is a component of call.flm. It fits a list of models to training data and generates the predictions, including determining whether or not the top model uses the year coefficient, which affects how predictions are generated.
 
-*predict_wYr.r* models a county-year variable to get predictions for both training data and out-of-sample data for a model that incorporates the year contrast coefficient. Sourced in WNV_models_lags.r 
+*predict_wYr* models a county-year variable to get predictions for both training data and out-of-sample data for a model that incorporates the year contrast coefficient. Sourced in models_lags. 
 
-*predict_noYr.r* is to get predictions for both training data and out-of-sample data from a model that does not use the year contrast coefficient. Sourced in WNV_models_lags.r 
+*predict_noYr* is to get predictions for both training data and out-of-sample data from a model that does not use the year contrast coefficient. Sourced in models_lags. 
 
-*extract_functional.r* extracts coefficients for functional smoothing curves.
-
-*see_lags.R* calls `extract_functional.r` to extract the coefficients for the functional smoothing curves and ggplots them. 
+*see.lags* calls `extract_functional` to extract the coefficients for the functional smoothing curves and ggplots them. 
