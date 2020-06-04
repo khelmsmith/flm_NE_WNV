@@ -16,28 +16,22 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Set up data for example
 ```{r data, message=FALSE}
 library(tidyverse)
-library(flm) # makes it easier to do quality control to have functions readily available
-#**# Moving code from assembleData_lags file
+library(flm) 
 
 # Read in population data
 pop = flm::NE_county_pops %>% mutate(pop100K = pop/1e5) 
-# pop <- read.csv("data/NE_county_pops.csv", stringsAsFactors = FALSE)
 
-#Human cases. In this example, cases is the rounded value of the fitted model (i.e. simulated)
+#Human cases, simulated, based on predicted values from the fitted model. 
 cases = flm::sampledat
-# cases <- read.csv("data/sampledat.csv", stringsAsFactors = FALSE)
 
 # Read in environmental data
 NEdat = flm::NEdat
-# NEdat <- read.csv("data/NEdat.csv", stringsAsFactors = FALSE)
 
 # Read in spi
 spi = flm::spi
-# spi <- read.csv("data/NEco_spi1_2019-12-15.csv", stringsAsFactors = FALSE)
 
 # Read in spei
 spei = flm::spei
-# spei <- read.csv("data/NEco_spei1_2019-12-15.csv", stringsAsFactors = FALSE)
 
 # Specify the last date to use
 target.date = "2018-02-01" 
@@ -45,17 +39,23 @@ target.date = "2018-02-01"
 # Specify the first year of data to use
 start.year = 2002
 
+#Specify lag lengths to use
+lag.lengths = c(9) 
+
+#For consistent results with simulated data
+in.seed = 4872957
+
 # Specify where to put the results
 #results.path = paste0(tempdir(), "/")
 
 ```
 ## Some basic quality control on synthetic data
 
-Our approach struggles if there are counties with no cases.
+Our approach struggles if there are counties with no cases, so we eliminate those counties (two in the simulated data).
 
 ```{r}
 data <- assemble.data.lags(pop, cases, NEdat, spi, spei, 
-                           target.date = "2018-02-02", start.year = 2002, in.seed = 4872957, lag.lengths = 12)
+                           target.date, start.year, in.seed, lag.lengths)
 allLagsT <- data[[1]] # 2004 - 2017
 allLags0 <- data[[2]]
 # how many counties lack cases?
@@ -68,8 +68,7 @@ allLagsT %>% group_by(County) %>%
   filter(total_cases > 0)
 ```
 
-What does the state total look like plotted 
-against time?
+What does the state total look like plotted against time?
 
 ```{r}
 allLagsT %>% group_by(year) %>% 
@@ -80,14 +79,14 @@ allLagsT %>% group_by(year) %>%
 
 ## Run the model
 
-This chunk assembles data and runs models, using all combinations of 12, 18, 24, 30 and 36 months of lagged data for mean temperature, precipitation, SPI and SPEI.
+This chunk assembles data and runs models, using all combinations of lagged data for mean temperature, precipitation, SPI and SPEI.
 
 Note: It takes about 25 minutes to run all the models.
 
 
 ```{r flm}
 
-flm.results = flm::call.flm(pop, cases, NEdat, spi, spei, target.date, start.year, in.seed = 4872957, lag.lengths = c(12, 18, 24, 30, 36))
+flm.results = flm::call.flm(pop, cases, NEdat, spi, spei, target.date, start.year, in.seed, lag.lengths)
 
 ```
 
