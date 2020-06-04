@@ -113,7 +113,7 @@ call.flm = function(pop, cases, NEdat, spi, spei, target.date = "2018-02-01",
   # Assemble data lags
   message("Assembling Data")
   start.time = Sys.time()
-  adl.out = assemble.data.lags(pop, cases, NEdat, spi, spei, target.date, start.year, in.seed)
+  adl.out = assemble.data.lags(pop, cases, NEdat, spi, spei, target.date, start.year, in.seed, lag.lengths = lag.lengths)
   allLagsT = adl.out[[1]]
   allLagsO = adl.out[[2]]
   message(sprintf("Elapsed Time: %.2f", Sys.time() - start.time))
