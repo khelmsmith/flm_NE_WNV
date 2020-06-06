@@ -1,4 +1,4 @@
-#' Function from Teller 2016 (doi 10.1111/2041-210X.12486) to create distributed lags of monthly data
+# Function from Teller 2016 (doi 10.1111/2041-210X.12486) to create distributed lags of monthly data
 
 aggLags<-function(datC, fun, meas, seg){
   pars <- as.list(match.call()[-1])
