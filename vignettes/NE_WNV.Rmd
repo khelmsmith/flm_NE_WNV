@@ -39,14 +39,11 @@ target.date = "2018-02-01"
 # Specify the first year of data to use
 start.year = 2002
 
-#Specify lag lengths to use
-lag.lengths = c(9) 
+# Specify lag lengths to use
+lag.lengths = c(9) # default is c(12, 18, 24, 30, 36)
 
 #For consistent results with simulated data
 in.seed = 4872957
-
-# Specify where to put the results
-#results.path = paste0(tempdir(), "/")
 
 ```
 ## Some basic quality control on synthetic data
@@ -58,11 +55,11 @@ data <- assemble.data.lags(pop, cases, NEdat, spi, spei,
                            target.date, start.year, in.seed, lag.lengths)
 allLagsT <- data[[1]] # 2004 - 2017
 allLags0 <- data[[2]]
-# how many counties lack cases?
+# how many counties lack cases? Should be none.
 allLagsT %>% group_by(County) %>% 
   summarize(total_cases = sum(cases)) %>% 
   filter(total_cases == 0)
-# should be none
+
 allLagsT %>% group_by(County) %>% 
   summarize(total_cases = sum(cases)) %>% 
   filter(total_cases > 0)
@@ -81,7 +78,7 @@ allLagsT %>% group_by(year) %>%
 
 This chunk assembles data and runs models, using all combinations of lagged data for mean temperature, precipitation, SPI and SPEI.
 
-Note: It takes about 25 minutes to run all the models.
+Note: It takes about 5 minutes to run the models with a lag of 9. It takes 25 minutes to run all the models with the set of default lags.
 
 
 ```{r flm}
