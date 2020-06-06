@@ -5,7 +5,7 @@ Version: 0.1.0
 Authors@R: c(person("Kelly Helm", "Smith", role = c("aut", "cre"),
            email = "ksmith2@unl.edu"), person("Andrew", "Tyre",
            role = c("aut"), email = "atyre2@unl.edu"), 
-           person("Alexander "Sasha"","Keyel", role = c("ctb"), 
+           person("Alexander Sasha","Keyel", role = c("ctb"), 
            email = "skeyel@gmail.com"))
 Author: Kelly Helm Smith <ksmith2@unl.edu>,
         Andrew Tyre <atyre2@unl.edu>
