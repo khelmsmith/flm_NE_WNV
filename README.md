@@ -11,7 +11,7 @@ Geohealth manuscript 2020GH000244.
 ## To install the package
 
 ```r
-devtools::install_github("khelmsmith/flm_WNV_NE")
+devtools::install_github("khelmsmith/flm_NE_WNV")
 ```
 
 For how to run it, see NE_WNV.rmd in "Vignettes" on the repository. If you want
