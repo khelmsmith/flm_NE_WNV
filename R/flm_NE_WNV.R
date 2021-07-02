@@ -4,9 +4,8 @@
 #' Developed in the context of West Nile virus in Nebraska
 #' 
 #' @docType package
-#' @name flm
+#' @name flm_NE_WNV
 NULL
-#**# NOTE flm has not been checked to see if other packages exist with this name. The package name can easily be changed at this point
 
 # Code for building package (Run during development only)
 #devtools::document()

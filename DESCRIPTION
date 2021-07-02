@@ -1,4 +1,4 @@
-Package: flm
+Package: flm_NE_WNV
 Type: Package
 Title: Functional Linear Modeling For Vector-borne Disease
 Version: 0.1.0
@@ -42,4 +42,4 @@ Suggests:
     knitr,
     rmarkdown,
     testthat (>= 2.1.0),
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
