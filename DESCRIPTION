@@ -1,4 +1,4 @@
-Package: flm_NE_WNV
+Package: flm.NE.WNV
 Type: Package
 Title: Functional Linear Modeling For Vector-borne Disease
 Version: 0.1.0

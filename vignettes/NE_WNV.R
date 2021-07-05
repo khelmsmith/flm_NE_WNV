@@ -1,20 +1,7 @@
----
-title: "NE WNV Example"
-author: "Kelly Helm Smith & Drew Tyre"
-date: "`r Sys.Date()`"
-output: html_document
-vignette: >
-  %\VignetteIndexEntry{Functional Linear Modeling for Vector-borne Disease}
-  %\VignetteEngine{knitr::rmarkdown}
-  \usepackage[utf8]{inputenc}
----
-
-```{r setup, include=FALSE}
+## ----setup, include=FALSE-----------------------------------------------------
 knitr::opts_chunk$set(echo = TRUE)
-```
 
-## Set up data for example
-```{r data, message=FALSE}
+## ----data, message=FALSE------------------------------------------------------
 library(tidyverse)
 library(flm.NE.WNV) 
 
@@ -45,12 +32,8 @@ lag.lengths = c(9) # default is c(12, 18, 24, 30, 36)
 #For consistent results with simulated data
 in.seed = 4872957
 
-```
-## Some basic quality control on synthetic data
 
-Our approach struggles if there are counties with no cases, so we eliminate those counties (two in the simulated data).
-
-```{r}
+## -----------------------------------------------------------------------------
 data <- assemble.data.lags(pop, cases, NEdat, spi, spei, 
                            target.date, start.year, in.seed, lag.lengths)
 allLagsT <- data[[1]] # 2004 - 2017
@@ -63,44 +46,29 @@ allLagsT %>% group_by(County) %>%
 allLagsT %>% group_by(County) %>% 
   summarize(total_cases = sum(cases)) %>% 
   filter(total_cases > 0)
-```
 
-What does the state total look like plotted against time?
-
-```{r}
+## -----------------------------------------------------------------------------
 allLagsT %>% group_by(year) %>% 
   summarize(total_cases = sum(cases)) %>% 
   ggplot() + 
   geom_point(mapping = aes(x = year, y = total_cases))
-```
 
-## Run the model
-
-This chunk assembles data and runs models, using all combinations of lagged data for mean temperature, precipitation, SPI and SPEI.
-
-Note: It takes about 5 minutes to run the models with a lag of 9. It takes 25 minutes to run all the models with the set of default lags.
-
-
-```{r flm}
+## ----flm----------------------------------------------------------------------
 
 flm.results = flm::call.flm(pop, cases, NEdat, spi, spei, target.date, start.year, in.seed, lag.lengths)
 
-```
 
-## Overview of model chosen by AIC 
-```{r}
+## -----------------------------------------------------------------------------
 top <- flm.results[[3]]$best
 
 mod <- summary(flm.results[[3]]$fittedModels[[top]])
 mod
 
-```
-## View predictions from best-fit model
-```{r}
-flm.results[[1]]
-```
 
-```{r}
+## -----------------------------------------------------------------------------
+flm.results[[1]]
+
+## -----------------------------------------------------------------------------
 dist_lag_terms <- flm:::extract_functional(flm.results[[3]]$fittedModels[[top]]) %>% 
   mutate(lcl = fit - 1.96*se,
          ucl = fit + 1.96*se)
@@ -108,6 +76,4 @@ ggplot(data = dist_lag_terms) +
   geom_line(mapping = aes(x = x, y = fit)) +
   geom_ribbon(mapping = aes(x = x, ymin = lcl, ymax = ucl), alpha = 0.2)+
   facet_wrap(~label)
-```
-
 

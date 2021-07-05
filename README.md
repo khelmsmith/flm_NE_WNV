@@ -1,4 +1,4 @@
-# flm_NE_WNV
+# flm.NE.WNV
 
 ## Functional linear modeling of West Nile Virus in Nebraska
 

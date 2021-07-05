@@ -4,7 +4,7 @@
 #' Developed in the context of West Nile virus in Nebraska
 #' 
 #' @docType package
-#' @name flm_NE_WNV
+#' @name flm.NE.WNV
 NULL
 
 # Code for building package (Run during development only)
