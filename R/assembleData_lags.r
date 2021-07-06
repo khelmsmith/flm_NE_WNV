@@ -7,33 +7,44 @@
 #' @param spei extracted monthly values of the Standardized Precipitation and Evapotranspiration Index for Nebraska counties, from Westwide Drought Tracker netcdf files. See Abatzoglou, J. T., McEvoy, D. J., & Redmond, K. T. (2017). The West Wide Drought Tracker: Drought monitoring at fine spatial scales. Bulletin of the American Meteorological Society, 98(9), 1815–1820. https://doi.org/10.1175/BAMS-D-16-0193.1
 #' @param target.date The last date to include for calculation of lags
 #' @param start.year The first year to include in the training data
-#' @param in.seed The starting number for the random number generator. This makes the results repeatable.
+#' @param in.seed If not NULL, the starting number for the random number generator. This makes the results repeatable. If NULL, treats cases as actual data
 #' @param lag.lengths the number of months to go backwards when creating lag matrices
 #' @export
-assemble.data.lags = function(pop, cases, NEdat, spi, spei, target.date, start.year, in.seed,
+assemble.data.lags = function(pop, cases, NEdat, spi, spei, target.date, start.year, in.seed = NULL,
                               lag.lengths = c(12, 18, 24, 30, 36)){
   
   # Identify starting month #**# Should this be an input, or is it best to use the month from the target date?
   start.month = as.numeric(strsplit(target.date, '-')[[1]][2])
+  target.year = as.numeric(strsplit(target.date, '-')[[1]][1])
+  
   
   # Assemble Human Cases data
   pop$year <- as.integer(pop$year)
   pop$cofips <- sprintf("%03d", pop$cofips)
   
-  #fitted model has size = 5.129 so
-  set.seed(in.seed) # pick a seed, any seed
-  cases2 <- dplyr::mutate(cases, cases = rnbinom(length(cases), size = 5.129, mu = cases))
-  HCcases <- dplyr::left_join(pop, cases2, by = c("County", "year"))
+  # simulate data if in.seed not null
+  if(!is.null(in.seed)){
+    #fitted model has size = 5.129 so
+    set.seed(in.seed) # pick a seed, any seed
+    cases2 <- dplyr::mutate(cases, cases = rnbinom(length(cases), size = 5.129, mu = cases))
+    HCcases <- dplyr::left_join(pop, cases2, by = c("County", "year"))
+  } else {
+    # check that cases has the right variable
+    if(!("cases" %in% names(cases))){
+      stop("ensure cases data frame has a cases variable")
+    }
+    HCcases <- dplyr::left_join(pop, cases, by = c("County", "year"))
+  }
   
   
-  HCcases <- HCcases[HCcases$year > 2001,]  
+  HCcases <- HCcases[HCcases$year > 2001 & HCcases$year <= target.year, ]  
   
   # compute cumulative incidence and lagged cases
   
   HC <- HCcases %>%
     dplyr::group_by(County) %>%
-    mutate(total_cases = sum(cases)) %>% 
-    filter(total_cases > 0) %>% 
+    dplyr::mutate(total_cases = sum(cases)) %>% 
+    dplyr::filter(total_cases > 0) %>% 
       dplyr::mutate(CI = lag(cumsum(cases/pop100K)),
              Lcases = lag(cases)) %>% 
     dplyr::mutate(CI = case_when(is.na(CI)~0,
@@ -44,7 +55,7 @@ assemble.data.lags = function(pop, cases, NEdat, spi, spei, target.date, start.y
   # incorporate ppt and temp
   
   NEdat$cofips <- sprintf("%03d", NEdat$cofips)
-  NEdat <- dplyr::left_join(NEdat, HC[,c("cofips", "County")])
+  NEdat <- dplyr::left_join(NEdat, HC[,c("cofips", "County")], by = "cofips")
   NEdat <- dplyr::mutate(NEdat, yrmo = paste(year, month))
   NEdat$yrmo <- parse_date_time(NEdat$yrmo, "ym")
   NEdat <- NEdat[NEdat$yrmo <= target.date,]
@@ -69,7 +80,7 @@ assemble.data.lags = function(pop, cases, NEdat, spi, spei, target.date, start.y
   # spi
   spi <- spi %>%
     dplyr::mutate(YrMo=paste(year, month, sep="-"))
-  spi$YrMo <- parse_date_time(spi$YrMo, "ym")
+  spi$YrMo <- lubridate::ym(spi$YrMo)
   spi$YrMo <- as.Date(spi$YrMo)
   spi <- spi[spi$YrMo <= target.date,]
   spi <- dplyr::rename(spi, spi = spi1)
@@ -114,10 +125,10 @@ assemble.data.lags = function(pop, cases, NEdat, spi, spei, target.date, start.y
     #spi lags
     for (i in seq_along(lagnames)) {
       County.i <- lagnames[[i]]
-      spi.i <- filter(spi, County == County.i)
-      dry.i <- select(spi.i, year, month, spi) 
-      HC.i <- filter(HC, County == County.i)
-      HC.i <- select(HC.i, County, year, cases, Lcases, CI, pop100K) 
+      spi.i <- dplyr::filter(spi, County == County.i)
+      dry.i <- dplyr::select(spi.i, year, month, spi) 
+      HC.i <- dplyr::filter(HC, County == County.i)
+      HC.i <- dplyr::select(HC.i, County, year, cases, Lcases, CI, pop100K) 
       lags.i <- makeDat(dry.i, HC.i, start.month, "spi", nUnits) #the "2" means "February. Currently generated from target.date.
       lags.i$County <- County.i 
       listOfLags[[i]] <- lags.i 
