@@ -12,7 +12,7 @@ call.flm(
   spei,
   target.date = "2018-02-01",
   start.year = 2002,
-  in.seed = 4872957,
+  in.seed = NULL,
   lag.lengths = c(12, 18, 24, 30, 36)
 )
 }
@@ -31,7 +31,7 @@ call.flm(
 
 \item{start.year}{The first year to include in the training data}
 
-\item{in.seed}{The starting number for the random number generator. This makes the results repeatable.}
+\item{in.seed}{If not NULL, the starting number for the random number generator. This makes the results repeatable. If NULL, treats cases as actual data}
 
 \item{lag.lengths}{vector of months to lag backwards for environmental variables.}
 }

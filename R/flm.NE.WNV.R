@@ -102,12 +102,12 @@ NULL
 #' @param spei extracted monthly values of the Standardized Precipitation and Evapotranspiration Index for Nebraska counties, from Westwide Drought Tracker netcdf files. See Abatzoglou, J. T., McEvoy, D. J., & Redmond, K. T. (2017). The West Wide Drought Tracker: Drought monitoring at fine spatial scales. Bulletin of the American Meteorological Society, 98(9), 1815–1820. https://doi.org/10.1175/BAMS-D-16-0193.1
 #' @param target.date The last date to include for calculation of lags
 #' @param start.year The first year to include in the training data
-#' @param in.seed The starting number for the random number generator. This makes the results repeatable.
+#' @param in.seed If not NULL, the starting number for the random number generator. This makes the results repeatable. If NULL, treats cases as actual data
 #' @param lag.lengths vector of months to lag backwards for environmental variables.
 #'
 #' @export
 call.flm = function(pop, cases, NEdat, spi, spei, target.date = "2018-02-01",
-                    start.year = 2002, in.seed = 4872957, lag.lengths = c(12, 18, 24, 30, 36)){
+                    start.year = 2002, in.seed = NULL, lag.lengths = c(12, 18, 24, 30, 36)){
 
   # Assemble data lags
   message("Assembling Data")

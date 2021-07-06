@@ -83,7 +83,7 @@ Note: It takes about 5 minutes to run the models with a lag of 9. It takes 25 mi
 
 ```{r flm}
 
-flm.results = flm::call.flm(pop, cases, NEdat, spi, spei, target.date, start.year, in.seed, lag.lengths)
+flm.results = call.flm(pop, cases, NEdat, spi, spei, target.date, start.year, in.seed, lag.lengths)
 
 ```
 
@@ -101,7 +101,7 @@ flm.results[[1]]
 ```
 
 ```{r}
-dist_lag_terms <- flm:::extract_functional(flm.results[[3]]$fittedModels[[top]]) %>% 
+dist_lag_terms <- extract_functional(flm.results[[3]]$fittedModels[[top]]) %>% 
   mutate(lcl = fit - 1.96*se,
          ucl = fit + 1.96*se)
 ggplot(data = dist_lag_terms) + 
