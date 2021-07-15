@@ -209,20 +209,29 @@ assemble.data.lags = function(pop, cases, NEdat, spi, spei, target.date, start.y
   allLags <- Reduce(merge.all, listOfLagLengths)
 
   # Moved from predict_nYr.r. Looked like it was duplicated and also used by predict_wYr.r and WNV_model_lags.R
-  oosy <- max(allLags$year) # or specify
+  # oosy <- max(allLags$year) # Use target.year
+  # before building county contrast, ensure counties with no cases prior to 
+  # target.year also remove counties in target.year
+  counties_w_cases <- allLags[allLags$year != target.year,] 
+  counties_w_cases <- dplyr::group_by(counties_w_cases, County)
+  counties_w_cases <- dplyr::mutate(counties_w_cases, total_cases = sum(cases))
+  counties_w_cases <- unique(counties_w_cases[counties_w_cases$total_cases > 0,"County", drop = TRUE])
+  allLags <- allLags[allLags$County %in% counties_w_cases, ]
+    
   allLags$County <- as.factor(allLags$County)
   csco <- length(unique(allLags$County))
   contrasts(allLags$County) = contr.sum(csco)
   allLags <- allLags[allLags$year >= start.year,]
   
-  allLagsT <- allLags[allLags$year != oosy,] #training data
-  yrmin <- min(allLagsT$year)
-  yrmax <- max(allLagsT$year)
+  allLagsT <- allLags[allLags$year != target.year,] #training data
+  
+  # yrmin <- min(allLagsT$year)
+  # yrmax <- max(allLagsT$year)
   allLagsT$year <- as.factor(allLagsT$year)
   csyr <- length(unique(allLagsT$year))
   contrasts(allLagsT$year) = contr.sum(csyr)
   
-  allLagsO <- allLags[allLags$year == oosy,] # out-of-sample data
+  allLagsO <- allLags[allLags$year == target.year,] # out-of-sample data
   
   return(list(allLagsT, allLagsO))
 }

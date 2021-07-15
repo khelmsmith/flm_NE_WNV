@@ -38,16 +38,16 @@ test_that(
                                    "lags_spi9", "spei9", "lags_spei9", "ppt9", "lags_ppt9", "tmean9", 
                                    "lags_tmean9", "spi12", "lags_spi12", "spei12", "lags_spei12", 
                                    "ppt12", "lags_ppt12", "tmean12", "lags_tmean12"))
-  expect_equal(dim(data[[1]]), c(166, 22))
-  expect_equal(dim(data[[1]][,13]), c(166, 10))
-  expect_equal(dim(data[[1]][,17]), c(166, 13))
+  expect_equal(dim(data[[1]]), c(164, 22))
+  expect_equal(dim(data[[1]][,13]), c(164, 10))
+  expect_equal(dim(data[[1]][,17]), c(164, 13))
   expect_equal(names(data[[2]]), c("County", "year", "cases", "Lcases", "CI", "pop100K", "spi9", 
                                    "lags_spi9", "spei9", "lags_spei9", "ppt9", "lags_ppt9", "tmean9", 
                                    "lags_tmean9", "spi12", "lags_spi12", "spei12", "lags_spei12", 
                                    "ppt12", "lags_ppt12", "tmean12", "lags_tmean12"))
-  expect_equal(dim(data[[2]]), c(83, 22))
-  expect_equal(dim(data[[2]][,13]), c(83, 10))
-  expect_equal(dim(data[[2]][,17]), c(83, 13))
+  expect_equal(dim(data[[2]]), c(82, 22))
+  expect_equal(dim(data[[2]][,13]), c(82, 10))
+  expect_equal(dim(data[[2]][,17]), c(82, 13))
   }
 )
 spi_test1 <- spi %>% 

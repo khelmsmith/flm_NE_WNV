@@ -23,6 +23,8 @@ pop = flm.NE.WNV::NE_county_pops %>% mutate(pop100K = pop/1e5)
 
 #Human cases, simulated, based on predicted values from the fitted model. 
 cases = flm.NE.WNV::sampledat
+# if you have actual case data, load that here and set in.seed = NULL
+# in the call to assemble.data below
 
 # Read in environmental data
 NEdat = flm.NE.WNV::NEdat
@@ -43,7 +45,7 @@ start.year = 2002
 lag.lengths = c(9) # default is c(12, 18, 24, 30, 36)
 
 #For consistent results with simulated data
-in.seed = 4872957
+in.seed = 4872957 # set = NULL if you have actual case data
 
 ```
 ## Some basic quality control on synthetic data
