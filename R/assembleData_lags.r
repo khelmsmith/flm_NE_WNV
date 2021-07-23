@@ -36,7 +36,7 @@ assemble.data.lags = function(pop, cases, NEdat, spi, spei, target.date, start.y
     HCcases <- dplyr::left_join(pop, cases, by = c("County", "year"))
   }
   
-  
+  HCcases[is.na(HCcases)] <- 0
   HCcases <- HCcases[HCcases$year > 2001 & HCcases$year <= target.year, ]  
   
   # compute cumulative incidence and lagged cases
@@ -50,7 +50,9 @@ assemble.data.lags = function(pop, cases, NEdat, spi, spei, target.date, start.y
     dplyr::mutate(CI = case_when(is.na(CI)~0,
                                  TRUE~CI),
                   Lcases = case_when(is.na(Lcases)~0,
-                                     TRUE~Lcases))
+                                     TRUE~Lcases)) %>% 
+    dplyr::ungroup() %>% 
+    as.data.frame()
   
   # incorporate ppt and temp
   
