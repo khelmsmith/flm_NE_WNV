@@ -49,7 +49,7 @@ assemble.data.lags = function(pop, cases, NEdat, spi, spei, target.date, start.y
              Lcases = lag(cases)) %>% 
     dplyr::mutate(CI = case_when(is.na(CI)~0,
                                  TRUE~CI),
-                  Lcases = case_when(is.na(Lcases)~0,
+                  Lcases = case_when(is.na(Lcases)~0L,
                                      TRUE~Lcases)) %>% 
     dplyr::ungroup() %>% 
     as.data.frame()
@@ -96,7 +96,7 @@ assemble.data.lags = function(pop, cases, NEdat, spi, spei, target.date, start.y
     dplyr::mutate(YrMo=paste(year, month, sep="-"))
   spei$YrMo <- parse_date_time(spei$YrMo, "ym")
   spei$YrMo <- as.Date(spei$YrMo)
-  spei <- spei[spi$YrMo <= target.date,]
+  spei <- spei[spei$YrMo <= target.date,]
   spei <- rename(spei, spei = spei1)
   spei$County <- trimws(spei$County)
   spei$County <- gsub(" ", "", spei$County)
@@ -130,7 +130,7 @@ assemble.data.lags = function(pop, cases, NEdat, spi, spei, target.date, start.y
       spi.i <- dplyr::filter(spi, County == County.i)
       dry.i <- dplyr::select(spi.i, year, month, spi) 
       HC.i <- dplyr::filter(HC, County == County.i)
-      HC.i <- dplyr::select(HC.i, County, year, cases, Lcases, CI, pop100K) 
+      HC.i <- dplyr::select(HC.i, County, year, cases, Lcases, CI, pop100K, density) 
       lags.i <- makeDat(dry.i, HC.i, start.month, "spi", nUnits) #the "2" means "February. Currently generated from target.date.
       lags.i$County <- County.i 
       listOfLags[[i]] <- lags.i 
@@ -148,7 +148,7 @@ assemble.data.lags = function(pop, cases, NEdat, spi, spei, target.date, start.y
       spei.i <- dplyr::filter(spei, County == County.i)
       dry.i <- dplyr::select(spei.i, year, month, spei) 
       HC.i <- dplyr::filter(HC, County == County.i)
-      HC.i <- dplyr::select(HC.i, County, year, cases, Lcases, CI, pop100K) 
+      HC.i <- dplyr::select(HC.i, County, year, cases, Lcases, CI, pop100K, density) 
       lags.i <- makeDat(dry.i, HC.i, start.month, "spei", nUnits) #the "2" means "February. Currently generated from target.date.
       lags.i$County <- County.i 
       listOfLags[[i]] <- lags.i 
@@ -168,7 +168,7 @@ assemble.data.lags = function(pop, cases, NEdat, spi, spei, target.date, start.y
       x.i <- dplyr::filter(NEdat, County == County.i)
       ppt.i <- dplyr::select(x.i, year, month, sdppt) 
       HC.i <- dplyr::filter(HC, County == County.i)
-      HC.i <- dplyr::select(HC.i, County, year, cases, Lcases, CI, pop100K) 
+      HC.i <- dplyr::select(HC.i, County, year, cases, Lcases, CI, pop100K, density) 
       lags.i <- makeDat(x.i, HC.i, start.month, "sdppt", nUnits) #the "2" means "February. Pick your start month.
       lags.i$County <- County.i 
       listOfLags[[i]] <- lags.i 
@@ -188,7 +188,7 @@ assemble.data.lags = function(pop, cases, NEdat, spi, spei, target.date, start.y
       x.i <- dplyr::filter(NEdat, County == County.i)
       tmean.i <- dplyr::select(x.i, year, month, sdtmean) 
       HC.i <- dplyr::filter(HC, County == County.i)
-      HC.i <- dplyr::select(HC.i, County, year, cases, Lcases, CI, pop100K) 
+      HC.i <- dplyr::select(HC.i, County, year, cases, Lcases, CI, pop100K, density) 
       lags.i <- makeDat(x.i, HC.i, start.month, "sdtmean", nUnits) #the "2" means "February. Pick your start month.
       lags.i$County <- County.i 
       listOfLags[[i]] <- lags.i 
@@ -201,7 +201,7 @@ assemble.data.lags = function(pop, cases, NEdat, spi, spei, target.date, start.y
     listofVars[[4]] <- rows
     
     merge.all <- function(x, y) {
-      merge(x, y, all=TRUE, by=c("County", "year", "cases", "Lcases", "CI", "pop100K"))
+      merge(x, y, all=TRUE, by=c("County", "year", "cases", "Lcases", "CI", "pop100K", "density"))
     }
     
     listOfLagLengths[[j]] <- Reduce(merge.all, listofVars)
