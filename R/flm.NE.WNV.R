@@ -97,9 +97,9 @@ NULL
 #' 
 #' @param pop County populations, a data frame with 5 variables \preformatted{County}, \preformatted{fips} (5 \strong{characters}), \preformatted{year}, \preformatted{pop100K}, \preformatted{density}. 
 #' @param cases data on annual numbers of human cases in each county. A data.frame with 3 variables, \preformatted{County}, \preformatted{year}, and \preformatted{cases}.
-#' @param weather monthly temperature and precipitation data for for each county. A data.frame with  \preformatted{County}, \preformatted{fips} (5 \strong{characters}), \preformatted{year}, \preformatted{month}, \preformatted{tmean}, and \preformatted{ppt}.
-#' @param spi monthly values of the Standardized Precipitation Index for each county. \preformatted{County}, \preformatted{fips} (5 \strong{characters}), \preformatted{year}, \preformatted{month}, \preformatted{spi}.
-#' @param spei monthly values of the Standardized Precipitation and Evapotranspiration Index for each county. \preformatted{County}, \preformatted{fips} (5 \strong{characters}), \preformatted{year}, \preformatted{month}, \preformatted{spei}.
+#' @param weather monthly temperature and precipitation data for for each county. A data.frame with  \preformatted{County}, \preformatted{fips} (5 \strong{characters}), \preformatted{year}, \preformatted{month} (integer), \preformatted{tmean}, and \preformatted{ppt}.
+#' @param spi monthly values of the Standardized Precipitation Index for each county. \preformatted{County}, \preformatted{fips} (5 \strong{characters}), \preformatted{year}, \preformatted{month} (integer), \preformatted{spi}.
+#' @param spei monthly values of the Standardized Precipitation and Evapotranspiration Index for each county. \preformatted{County}, \preformatted{fips} (5 \strong{characters}), \preformatted{year}, \preformatted{month} (integer), \preformatted{spei}.
 #' @param target.date The last date to include for calculation of lags, a character string with ISO XXX format (yyyy-mm-dd).
 #' @param start.year The first year to include in the training data. Should be coercible to integer.
 #' @param in.seed If not NULL, the starting number for the random number generator. This makes the results repeatable. If NULL, treats cases as actual data

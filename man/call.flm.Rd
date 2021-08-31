@@ -21,11 +21,11 @@ call.flm(
 
 \item{cases}{data on annual numbers of human cases in each county. A data.frame with 3 variables, \preformatted{County}, \preformatted{year}, and \preformatted{cases}.}
 
-\item{weather}{monthly temperature and precipitation data for for each county. A data.frame with  \preformatted{County}, \preformatted{fips} (5 \strong{characters}), \preformatted{year}, \preformatted{month}, \preformatted{tmean}, and \preformatted{ppt}.}
+\item{weather}{monthly temperature and precipitation data for for each county. A data.frame with  \preformatted{County}, \preformatted{fips} (5 \strong{characters}), \preformatted{year}, \preformatted{month} (integer), \preformatted{tmean}, and \preformatted{ppt}.}
 
-\item{spi}{monthly values of the Standardized Precipitation Index for each county. \preformatted{County}, \preformatted{fips} (5 \strong{characters}), \preformatted{year}, \preformatted{month}, \preformatted{spi}.}
+\item{spi}{monthly values of the Standardized Precipitation Index for each county. \preformatted{County}, \preformatted{fips} (5 \strong{characters}), \preformatted{year}, \preformatted{month} (integer), \preformatted{spi}.}
 
-\item{spei}{monthly values of the Standardized Precipitation and Evapotranspiration Index for each county. \preformatted{County}, \preformatted{fips} (5 \strong{characters}), \preformatted{year}, \preformatted{month}, \preformatted{spei}.}
+\item{spei}{monthly values of the Standardized Precipitation and Evapotranspiration Index for each county. \preformatted{County}, \preformatted{fips} (5 \strong{characters}), \preformatted{year}, \preformatted{month} (integer), \preformatted{spei}.}
 
 \item{target.date}{The last date to include for calculation of lags, a character string with ISO XXX format (yyyy-mm-dd).}
 
