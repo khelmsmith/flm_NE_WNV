@@ -25,7 +25,7 @@ NULL
 # Document data sets
 #' NE_county_pops
 #'
-#' Nebraska County populations, 2000-2018, from the U.S. Census Bureau, using annual estimates
+#' Nebraska County populations, 2000-2019, from the U.S. Census Bureau, using annual estimates
 #' @docType data
 #'
 "NE_county_pops"
@@ -95,24 +95,25 @@ NULL
 
 #' Main function
 #' 
-#' @param pop Nebraska County populations, 2000-2018, from the U.S. Census Bureau, using annual estimates
-#' @param cases simulated data on annual numbers of human cases of neuro-invasive and non-neuro-invasive West Nile Virus in Nebraska counties. It is predictions of a model that was trained on actual numbers of cases as recorded in CDC's Arbonet database. It excludes Arthur County, because no cases have been recorded there to date, and we had to exclude it from our modeling to get it to work. 
-#' @param NEdat temperature and precipitation data for Nebraska counties each month from January 1998 to February 2019 from the National Centers for Environmental Information, National Climatic Data Center (ftp://ftp.ncdc.noaa.gov/pub/data/cirs/climdiv/)
-#' @param spi extracted monthly values of the Standardized Precipitation Index for Nebraska counties, from Westwide Drought Tracker netcdf files. See Abatzoglou, J. T., McEvoy, D. J., & Redmond, K. T. (2017). The West Wide Drought Tracker: Drought monitoring at fine spatial scales. Bulletin of the American Meteorological Society, 98(9), 1815–1820. https://doi.org/10.1175/BAMS-D-16-0193.1
-#' @param spei extracted monthly values of the Standardized Precipitation and Evapotranspiration Index for Nebraska counties, from Westwide Drought Tracker netcdf files. See Abatzoglou, J. T., McEvoy, D. J., & Redmond, K. T. (2017). The West Wide Drought Tracker: Drought monitoring at fine spatial scales. Bulletin of the American Meteorological Society, 98(9), 1815–1820. https://doi.org/10.1175/BAMS-D-16-0193.1
-#' @param target.date The last date to include for calculation of lags
-#' @param start.year The first year to include in the training data
+#' @param pop County populations, a data frame with 5 variables \preformatted{County}, \preformatted{fips} (5 \strong{characters}), \preformatted{year}, \preformatted{pop100K}, \preformatted{density}. 
+#' @param cases data on annual numbers of human cases in each county. A data.frame with 3 variables, \preformatted{County}, \preformatted{year}, and \preformatted{cases}.
+#' @param weather monthly temperature and precipitation data for for each county. A data.frame with  \preformatted{County}, \preformatted{fips} (5 \strong{characters}), \preformatted{year}, \preformatted{month}, \preformatted{tmean}, and \preformatted{ppt}.
+#' @param spi monthly values of the Standardized Precipitation Index for each county. \preformatted{County}, \preformatted{fips} (5 \strong{characters}), \preformatted{year}, \preformatted{month}, \preformatted{spi}.
+#' @param spei monthly values of the Standardized Precipitation and Evapotranspiration Index for each county. \preformatted{County}, \preformatted{fips} (5 \strong{characters}), \preformatted{year}, \preformatted{month}, \preformatted{spei}.
+#' @param target.date The last date to include for calculation of lags, a character string with ISO XXX format (yyyy-mm-dd).
+#' @param start.year The first year to include in the training data. Should be coercible to integer.
 #' @param in.seed If not NULL, the starting number for the random number generator. This makes the results repeatable. If NULL, treats cases as actual data
-#' @param lag.lengths vector of months to lag backwards for environmental variables.
+#' @param lag.lengths the number of months to go backwards when creating lag matrices. Numeric vector.
 #'
 #' @export
-call.flm = function(pop, cases, NEdat, spi, spei, target.date = "2018-02-01",
+call.flm = function(pop, cases, weather, spi, spei, target.date = "2018-02-01",
                     start.year = 2002, in.seed = NULL, lag.lengths = c(12, 18, 24, 30, 36)){
-
+  checkInputs(pop, cases, weather, spi, spei, target.date, start.year, in.seed, lag.lengths)
+  
   # Assemble data lags
   message("Assembling Data")
   start.time = Sys.time()
-  adl.out = assemble.data.lags(pop, cases, NEdat, spi, spei, target.date, start.year, in.seed, lag.lengths = lag.lengths)
+  adl.out = assemble.data.lags(pop, cases, weather, spi, spei, target.date, start.year, in.seed, lag.lengths = lag.lengths)
   allLagsT = adl.out[[1]]
   allLagsO = adl.out[[2]]
   message(sprintf("Elapsed Time: %.2f", Sys.time() - start.time))

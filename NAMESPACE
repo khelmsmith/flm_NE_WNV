@@ -2,6 +2,7 @@
 
 export(assemble.data.lags)
 export(call.flm)
+export(checkInputs)
 export(extract_functional)
 export(makeDat)
 export(models_lags)

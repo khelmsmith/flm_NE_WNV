@@ -1,7 +1,7 @@
 Package: flm.NE.WNV
 Type: Package
 Title: Functional Linear Modeling For Vector-borne Disease
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: c(person("Kelly Helm", "Smith", role = c("aut", "cre"),
            email = "ksmith2@unl.edu"), person("Andrew", "Tyre",
            role = c("aut"), email = "atyre2@unl.edu"), 
@@ -44,3 +44,5 @@ Suggests:
     testthat (>= 3.0.0)
 RoxygenNote: 7.1.1
 Config/testthat/edition: 3
+Depends: 
+    R (>= 2.10)
