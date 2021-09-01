@@ -107,7 +107,9 @@ NULL
 #'
 #' @export
 call.flm = function(pop, cases, weather, spi, spei, target.date = "2018-02-01",
-                    start.year = 2002, in.seed = NULL, lag.lengths = c(12, 18, 24, 30, 36)){
+                    start.year = 2002, in.seed = NULL, lag.lengths = c(12, 18, 24, 30, 36),
+                    fillzeros = FALSE){
+
   checkInputs(pop, cases, weather, spi, spei, target.date, start.year, in.seed, lag.lengths)
   
   # Assemble data lags
@@ -229,6 +231,10 @@ call.flm = function(pop, cases, weather, spi, spei, target.date = "2018-02-01",
   results <- models_lags(allmods, allLagsT, allLagsO, results.path) 
 
   message(sprintf("Elapsed Time: %.2f; Process time: %.2f", (Sys.time() - start.time), (Sys.time() - process.start)))
+  if (fillzeros){
+    message("Filling in counties with no cases with zero predictions.")
+    # cases data frame has all counties, including those with zeros.
+  }
   
   #**# Update when these are extracted in a format that can be passed to dfmip
   flm.results = results$predictions
