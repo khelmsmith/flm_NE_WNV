@@ -32,6 +32,9 @@ county_lookup <- pop %>%
 #Human cases, simulated, based on predicted values from the fitted model. 
 cases = flm.NE.WNV::sampledat %>% 
   select(County, year, cases)%>% 
+  # # drop Arthur back to 0 to test new zero filling methods
+  # mutate(cases = case_when(County == "Arthur" ~ 0,
+  #                          TRUE ~ cases)) %>% 
   as.data.frame()
 
 # Read in environmental data
@@ -91,6 +94,11 @@ allLagsT %>% group_by(County) %>%
 allLagsT %>% group_by(County) %>% 
   summarize(total_cases = sum(cases)) %>% 
   filter(total_cases > 0)
+
+# to identify counties to fill in
+allunits <- unique(cases$County)
+missingunits <- !(allunits %in% unique(allLags0$County))
+allunits[missingunits]
 ```
 
 What does the state total look like plotted against time?

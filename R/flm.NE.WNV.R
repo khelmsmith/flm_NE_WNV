@@ -231,9 +231,26 @@ call.flm = function(pop, cases, weather, spi, spei, target.date = "2018-02-01",
   results <- models_lags(allmods, allLagsT, allLagsO, results.path) 
 
   message(sprintf("Elapsed Time: %.2f; Process time: %.2f", (Sys.time() - start.time), (Sys.time() - process.start)))
+
   if (fillzeros){
     message("Filling in counties with no cases with zero predictions.")
     # cases data frame has all counties, including those with zeros.
+    # extract counties in cases that are NOT in results$predictions
+    # to identify counties to fill in
+    allunits <- unique(cases$County)
+    missingunits <- !(allunits %in% unique(allLagsO$County))
+    if (sum(missingunits) > 0){
+      missingunits <- allunits[missingunits]
+      missingunits <- data.frame(County = missingunits,
+                                 year = allLagsO$year[1],
+                                 cases = 0,
+                                 fit = NA_real_,
+                                 se = NA_real_,
+                                 predcases = 0)
+      results$predictions <- dplyr::bind_rows(results$predictions, missingunits)                               
+    } else {
+      message("No missing units found")
+    }
   }
   
   #**# Update when these are extracted in a format that can be passed to dfmip
