@@ -19,6 +19,17 @@ checkInputs = function(pop, cases, weather, spi, spei, target.date, start.year, 
       cat(paste(paste(expected), "\n"))
       stop(paste("data.frame",nameofx,"has issues. Check variables:", paste(names(x)[!check], sep = ","),"\n"))
     }
+    if ("year" %in% expected){
+      if (lubridate::year(target.date) > max(x$year)){
+        stop(paste("data.frame",nameofx, "doesn't have enough data for target date ", target.date))
+      }
+    }
+    if ("month" %in% expected){
+      dates <- lubridate::ym(paste(x$year, x$month, sep = "-"))
+      if (lubridate::ymd(target.date) > max(dates)){
+        stop(paste("data.frame",nameofx,"doesn't have enough data for target date"))
+      }
+    }
   }
   checkvariables(pop, c("County","fips","year","pop100K", "density"))
 
