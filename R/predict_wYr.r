@@ -25,7 +25,24 @@ predict_wYr = function(fittedModel, allLagsT, allLagsO){
   # predict the year coefficient with training data 
   
   # change tmean and SP(E)I variable lag lengths here to match model formula
-  yrcoefmodform <- update(modform, yrcoef~.-year-offset(log(pop100K)))
+  # yrcoefmodform <- update(modform, yrcoef~.-year-offset(log(pop100K)))
+  # yrcoefmod <- gam(yrcoefmodform, data=allLagsT, family=gaussian())
+  # do it the hard way, because we don't know what other terms are in the model
+  # and update doesn't remove the offset.
+  form <- Reduce(paste, deparse(fittedModel$formula[3]))
+  form <- gsub('^.|.$', '', form)
+  form <- trimws(form)  
+  formterms <- unlist(strsplit(form, "+", fixed = TRUE))
+  numterms <- length(formterms)
+  termtab <- data.frame(matrix(unlist(formterms), nrow=numterms, byrow=TRUE),stringsAsFactors=FALSE)
+  colnames(termtab) <- "terms"
+  termtab <- termtab %>% mutate(keep = ifelse(grepl("s\\(", terms), "yes", "no"))
+  termtab <- termtab[termtab$keep == "yes",]
+  newterms <- toString(paste0(termtab$terms, sep = "+"))
+  newterms <- gsub("\\+,","\\+", newterms)
+  yrcoefmodform <- paste0("yrcoef ~ ",newterms ," County")
+  yrcoefmodform <- as.formula(yrcoefmodform)
+  
   yrcoefmod <- gam(yrcoefmodform, data=allLagsT, family=gaussian())
   
   # use the year coefficient to predict coyr for each county-year on training data

@@ -16,8 +16,8 @@ models_lags = function(allmods, allLagsT, allLagsO, results.path){
   best <- which.min(AICfits)
   form <- Reduce(paste, deparse(allfits[[best]]$formula[3]))
   
- if (grepl("year", form) == TRUE )
-{ preds <- predict_wYr(allfits[[best]], allLagsT, allLagsO)
+  if (grepl("year", form) == TRUE ){ 
+    preds <- predict_wYr(allfits[[best]], allLagsT, allLagsO)
   } else if (grepl("year", form) == FALSE ) {
     preds <- predict_noYr(allfits[[best]], allLagsT, allLagsO)
   }

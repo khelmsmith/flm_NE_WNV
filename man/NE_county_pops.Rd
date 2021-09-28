@@ -5,12 +5,12 @@
 \alias{NE_county_pops}
 \title{NE_county_pops}
 \format{
-An object of class \code{data.frame} with 1767 rows and 4 columns.
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 1860 rows and 5 columns.
 }
 \usage{
 NE_county_pops
 }
 \description{
-Nebraska County populations, 2000-2018, from the U.S. Census Bureau, using annual estimates
+Nebraska County populations, 2000-2019, from the U.S. Census Bureau, using annual estimates
 }
 \keyword{datasets}
