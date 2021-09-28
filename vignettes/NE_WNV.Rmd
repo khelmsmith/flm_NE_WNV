@@ -64,14 +64,14 @@ spei = flm.NE.WNV::spei %>%
   select(County, fips, year, month, spei)%>% 
   as.data.frame()
 
-# Specify the last date to use
-target.date = "2019-03-01" 
-
+# Specify the last date to use -- package data incomplete for 2019
+target.date = "2018-03-01" 
+#target.date = "2019-03-01" -- this should fail with an error
 # Specify the first year of data to use
 start.year = 2002
 
 # Specify lag lengths to use
-lag.lengths = c(12, 18, 24, 30, 36)
+lag.lengths = c(12, 18) #c(12, 18, 24, 30, 36)
 
 #For consistent results with simulated data
 in.seed = 4872957 # set = NULL if you have actual case data
@@ -84,8 +84,8 @@ Our approach struggles if there are counties with no cases, so we eliminate thos
 ```{r}
 data <- assemble.data.lags(pop, cases, NEdat, spi, spei, 
                            target.date, start.year, in.seed, lag.lengths)
-allLagsT <- data[[1]] # 2004 - 2018
-allLags0 <- data[[2]] # 2019
+allLagsT <- data[[1]] # 2004 - 2017
+allLags0 <- data[[2]] # 2018
 # how many counties lack cases? Should be none.
 allLagsT %>% group_by(County) %>% 
   summarize(total_cases = sum(cases)) %>% 
@@ -97,7 +97,7 @@ allLagsT %>% group_by(County) %>%
 
 # to identify counties to fill in
 allunits <- unique(cases$County)
-missingunits <- !(allunits %in% unique(allLags0$County))
+missingunits <- !(allunits %in% unique(allLagsT$County))
 allunits[missingunits]
 ```
 
@@ -119,7 +119,10 @@ Note: It takes about 5 minutes to run the models with a lag of 9. It takes 25 mi
 
 ```{r flm}
 
-flm.results = call.flm(pop, cases, NEdat, spi, spei, target.date, start.year, in.seed = in.seed, lag.lengths)
+flm.results = call.flm(pop, cases, NEdat, 
+                       spi, spei, target.date, start.year, 
+                       in.seed = in.seed, lag.lengths,
+                       fillzeros = TRUE)
 
 ```
 
