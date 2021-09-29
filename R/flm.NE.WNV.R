@@ -86,6 +86,7 @@ NULL
 #' @import gamm4
 #' @import lme4
 #' @import mgcv
+#' @import gratia
 #' @importFrom MuMIn AICc
 #' @import purrr
 #' @import ggplot2
@@ -104,11 +105,12 @@ NULL
 #' @param in.seed If not NULL, the starting number for the random number generator. This makes the results repeatable. If NULL, treats cases as actual data
 #' @param lag.lengths the number of months to go backwards when creating lag matrices. Numeric vector.
 #' @param fillzeros Logical. If true, add zero predictions for counties that never had any cases.
+#' @param nsims Integer. Number of samples to draw from posterior distribution. Defaults to zero, which has the expected value of cases in predcases.
 #'
 #' @export
 call.flm = function(pop, cases, weather, spi, spei, target.date = "2018-02-01",
                     start.year = 2002, in.seed = NULL, lag.lengths = c(12, 18, 24, 30, 36),
-                    fillzeros = FALSE){
+                    fillzeros = FALSE, nsims = 0){
 
   checkInputs(pop, cases, weather, spi, spei, target.date, start.year, in.seed, lag.lengths)
   # to enable use of gratia::simulate.gam move this code to 
@@ -232,7 +234,7 @@ call.flm = function(pop, cases, weather, spi, spei, target.date = "2018-02-01",
   
   process.start = Sys.time()
 
-  results <- models_lags(allmods, allLagsT, allLagsO, fillzeros, allunits) 
+  results <- models_lags(allmods, allLagsT, allLagsO, fillzeros, allunits, nsims) 
 
   message(sprintf("Elapsed Time: %.2f; Process time: %.2f", (Sys.time() - start.time), (Sys.time() - process.start)))
 

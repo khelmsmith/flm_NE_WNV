@@ -6,9 +6,9 @@
 \alias{predict_wYr}
 \title{Predict data}
 \usage{
-predict_noYr(fittedModel, allLagsT, allLagsO, fillzeros, allunits)
+predict_noYr(fittedModel, allLagsT, allLagsO, fillzeros, allunits, nsims)
 
-predict_wYr(fittedModel, allLagsT, allLagsO, fillzeros, allunits)
+predict_wYr(fittedModel, allLagsT, allLagsO, fillzeros, allunits, nsims)
 }
 \arguments{
 \item{fittedModel}{Model to predict from}
@@ -21,6 +21,8 @@ predict_wYr(fittedModel, allLagsT, allLagsO, fillzeros, allunits)
 
 \item{allunits}{Character. Vector of county names in complete data set. Used 
 when fillzeros == TRUE}
+
+\item{nsims}{Integer. Number of samples to draw from posterior distribution. Defaults to zero, which has the expected value of cases in predcases.}
 }
 \description{
 Predict data

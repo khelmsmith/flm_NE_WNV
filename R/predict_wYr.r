@@ -6,12 +6,13 @@
 #' @param fillzeros Logical. If TRUE fill in with zeros counties that have no cases ever.
 #' @param allunits Character. Vector of county names in complete data set. Used 
 #'   when fillzeros == TRUE
+#' @param nsims Integer. Number of samples to draw from posterior distribution. Defaults to zero, which has the expected value of cases in predcases.
 #' @name predict
 #' @export
 NULL
 
 #' @describeIn predict Predict from models including year
-predict_wYr = function(fittedModel, allLagsT, allLagsO, fillzeros, allunits){
+predict_wYr = function(fittedModel, allLagsT, allLagsO, fillzeros, allunits, nsims){
   
   # Plug in the model formula here
   modform <- formula(fittedModel)

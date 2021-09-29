@@ -14,7 +14,8 @@ call.flm(
   start.year = 2002,
   in.seed = NULL,
   lag.lengths = c(12, 18, 24, 30, 36),
-  fillzeros = FALSE
+  fillzeros = FALSE,
+  nsims = 0
 )
 }
 \arguments{
@@ -37,6 +38,8 @@ call.flm(
 \item{lag.lengths}{the number of months to go backwards when creating lag matrices. Numeric vector.}
 
 \item{fillzeros}{Logical. If true, add zero predictions for counties that never had any cases.}
+
+\item{nsims}{Integer. Number of samples to draw from posterior distribution. Defaults to zero, which has the expected value of cases in predcases.}
 }
 \description{
 Main function

@@ -4,7 +4,7 @@
 \alias{models_lags}
 \title{Fits the models to training data and generates the predictions}
 \usage{
-models_lags(allmods, allLagsT, allLagsO, fillzeros, allunits)
+models_lags(allmods, allLagsT, allLagsO, fillzeros, allunits, nsims)
 }
 \arguments{
 \item{allmods}{List of models}
@@ -17,6 +17,8 @@ models_lags(allmods, allLagsT, allLagsO, fillzeros, allunits)
 
 \item{allunits}{Character. Vector of county names in complete data set. Used 
 when fillzeros == TRUE}
+
+\item{nsims}{Integer. Number of samples to draw from posterior distribution. Defaults to zero, which has the expected value of cases in predcases.}
 }
 \value{
 Returns predictions for the out-of-sample year, a list of fitted models, AIC scores, and the model with the lowest AIC score
