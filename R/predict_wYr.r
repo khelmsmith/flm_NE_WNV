@@ -1,10 +1,17 @@
-#' Predict data, using imputation to get "new years"
+#' Predict data
 #' 
 #' @param fittedModel Model to predict from
 #' @param allLagsT The assembled data set to use for training
 #' @param allLagsO The assembled data set to use for out-of-sample prediction
+#' @param fillzeros Logical. If TRUE fill in with zeros counties that have no cases ever.
+#' @param allunits Character. Vector of county names in complete data set. Used 
+#'   when fillzeros == TRUE
+#' @name predict
 #' @export
-predict_wYr = function(fittedModel, allLagsT, allLagsO){
+NULL
+
+#' @describeIn predict Predict from models including year
+predict_wYr = function(fittedModel, allLagsT, allLagsO, fillzeros, allunits){
   
   # Plug in the model formula here
   modform <- formula(fittedModel)

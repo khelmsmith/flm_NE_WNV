@@ -90,7 +90,6 @@ NULL
 #' @import purrr
 #' @import ggplot2
 #' @importFrom stats contr.sum contrasts<- gaussian na.omit predict rnbinom sd update
-#' @importFrom utils write.csv
 NULL
 
 #' Main function
@@ -112,6 +111,10 @@ call.flm = function(pop, cases, weather, spi, spei, target.date = "2018-02-01",
                     fillzeros = FALSE){
 
   checkInputs(pop, cases, weather, spi, spei, target.date, start.year, in.seed, lag.lengths)
+  # to enable use of gratia::simulate.gam move this code to 
+  # predict_wYr etc. pass in the allunits down to models_lags
+  # add an argument nsims if nsims > 0 then return matrix of predictions
+  allunits <- unique(cases$County)
   
   # Assemble data lags
   message("Assembling Data")
@@ -229,33 +232,10 @@ call.flm = function(pop, cases, weather, spi, spei, target.date = "2018-02-01",
   
   process.start = Sys.time()
 
-  results <- models_lags(allmods, allLagsT, allLagsO, results.path) 
+  results <- models_lags(allmods, allLagsT, allLagsO, fillzeros, allunits) 
 
   message(sprintf("Elapsed Time: %.2f; Process time: %.2f", (Sys.time() - start.time), (Sys.time() - process.start)))
 
-  # to enable use of gratia::simulate.gam move this code to 
-  # predict_wYr etc. pass in the allunits down to models_lags
-  # add an argument nsims if nsims > 0 then return matrix of predictions
-  if (fillzeros){
-    message("Filling in counties with no cases with zero predictions.")
-    # cases data frame has all counties, including those with zeros.
-    # extract counties in cases that are NOT in results$predictions
-    # to identify counties to fill in
-    allunits <- unique(cases$County)
-    missingunits <- !(allunits %in% unique(allLagsO$County))
-    if (sum(missingunits) > 0){
-      missingunits <- allunits[missingunits]
-      missingunits <- data.frame(County = missingunits,
-                                 year = allLagsO$year[1],
-                                 cases = 0,
-                                 fit = NA_real_,
-                                 se = NA_real_,
-                                 predcases = 0)
-      results$predictions <- dplyr::bind_rows(results$predictions, missingunits)                               
-    } else {
-      message("No missing units found")
-    }
-  }
   
   #**# Update when these are extracted in a format that can be passed to dfmip
   flm.results = results$predictions

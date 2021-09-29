@@ -1,10 +1,6 @@
-#' Predict data without using year
-#' 
-#' @param allLagsT The assembled data set to use for training
-#' @param allLagsO The assembled data set to use for out-of-sample prediction
-#' @param fittedModel Model to predict from
-#' 
-predict_noYr = function(fittedModel, allLagsT, allLagsO){
+
+#' @describeIn predict Predict without year in model 
+predict_noYr = function(fittedModel, allLagsT, allLagsO, fillzeros, allunits){
 
   # plug in model formula here
   modform <- formula(fittedModel)
