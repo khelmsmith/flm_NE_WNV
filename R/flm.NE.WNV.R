@@ -232,6 +232,9 @@ call.flm = function(pop, cases, weather, spi, spei, target.date = "2018-02-01",
 
   message(sprintf("Elapsed Time: %.2f; Process time: %.2f", (Sys.time() - start.time), (Sys.time() - process.start)))
 
+  # to enable use of gratia::simulate.gam move this code to 
+  # predict_wYr etc. pass in the allunits down to models_lags
+  # add an argument nsims if nsims > 0 then return matrix of predictions
   if (fillzeros){
     message("Filling in counties with no cases with zero predictions.")
     # cases data frame has all counties, including those with zeros.
