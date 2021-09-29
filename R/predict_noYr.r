@@ -41,7 +41,7 @@ predict_noYr = function(fittedModel, allLagsT, allLagsO){
   
   # exponentiate fit to get predictions from model with log link
   
-  allIndepData <- dplyr::mutate(allIndepData, pred = exp(fit))
+  allIndepData <- dplyr::mutate(allIndepData, predcases = exp(fit))
 
   return(allLagsO)
 }
