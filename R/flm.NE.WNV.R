@@ -104,6 +104,7 @@ NULL
 #' @param start.year The first year to include in the training data. Should be coercible to integer.
 #' @param in.seed If not NULL, the starting number for the random number generator. This makes the results repeatable. If NULL, treats cases as actual data
 #' @param lag.lengths the number of months to go backwards when creating lag matrices. Numeric vector.
+#' @param fillzeros Logical. If true, add zero predictions for counties that never had any cases.
 #'
 #' @export
 call.flm = function(pop, cases, weather, spi, spei, target.date = "2018-02-01",

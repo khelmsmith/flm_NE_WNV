@@ -13,7 +13,8 @@ call.flm(
   target.date = "2018-02-01",
   start.year = 2002,
   in.seed = NULL,
-  lag.lengths = c(12, 18, 24, 30, 36)
+  lag.lengths = c(12, 18, 24, 30, 36),
+  fillzeros = FALSE
 )
 }
 \arguments{
@@ -34,6 +35,8 @@ call.flm(
 \item{in.seed}{If not NULL, the starting number for the random number generator. This makes the results repeatable. If NULL, treats cases as actual data}
 
 \item{lag.lengths}{the number of months to go backwards when creating lag matrices. Numeric vector.}
+
+\item{fillzeros}{Logical. If true, add zero predictions for counties that never had any cases.}
 }
 \description{
 Main function
