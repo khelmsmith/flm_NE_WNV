@@ -74,6 +74,28 @@ predict_wYr = function(fittedModel, allLagsT, allLagsO, fillzeros, allunits){
   allLagsO <- allLagsO[,c("County", "year", "cases", "fit", "se")]
   
   allLagsO <- dplyr::mutate(allLagsO, predcases = exp(fit))
-
+  # to enable use of gratia::simulate.gam move this code to 
+  # predict_wYr etc. pass in the allunits down to models_lags
+  # add an argument nsims if nsims > 0 then return matrix of predictions
+  if (fillzeros){
+    message("Filling in counties with no cases with zero predictions.")
+    # allunits has all counties, including those with zeros.
+    # extract counties in cases that are NOT in results$predictions
+    # to identify counties to fill in
+    missingunits <- !(allunits %in% unique(allLagsO$County))
+    if (sum(missingunits) > 0){
+      missingunits <- allunits[missingunits]
+      missingunits <- data.frame(County = missingunits,
+                                 year = allLagsO$year[1],
+                                 cases = 0,
+                                 fit = NA_real_,
+                                 se = NA_real_,
+                                 predcases = 0)
+      allLagsO <- dplyr::bind_rows(allLagsO, missingunits)                               
+    } else {
+      message("No missing units found")
+    }
+  }
+  
   return(allLagsO)
 }
