@@ -1,13 +1,18 @@
 
 #' @describeIn predict Predict without year in model 
-predict_noYr = function(fittedModel, allLagsT, allLagsO, fillzeros, allunits, nsims){
+predict_noYr = function(fittedModel, allLagsT, allLagsO, fillzeros, allunits, nsim){
 
   predsO <- predict(fittedModel, newdata=allLagsO, type = "link", se=TRUE)
   allLagsO$fit <- predsO[[1]]
   allLagsO$se <- predsO[[2]]
-  allLagsO <- allLagsO[,c("County", "year", "cases", "Lcases", "fit", "se")]
   
-  allLagsO <- dplyr::mutate(allLagsO, predcases = exp(fit))
+  if (nsim > 0){
+    allLagsO$predcases <- simulate(fittedModel, newdata = allLagsO, nsim = nsim)
+  } else {
+    allLagsO$predcases <- exp(allLagsO$fit)
+  }
+
+  allLagsO <- allLagsO[,c("County", "year", "cases", "Lcases", "fit", "se", "predcases")]
   
   if (fillzeros){
     message("Filling in counties with no cases with zero predictions.")
@@ -22,7 +27,9 @@ predict_noYr = function(fittedModel, allLagsT, allLagsO, fillzeros, allunits, ns
                                  cases = 0,
                                  fit = NA_real_,
                                  se = NA_real_,
-                                 predcases = 0)
+                                 predcases = ifelse(nsim > 0, matrix(0, nrow = length(missingunits),
+                                                                     ncol = nsim),
+                                                    0))
       allLagsO <- dplyr::bind_rows(allLagsO, missingunits)                               
     } else {
       message("No missing units found")

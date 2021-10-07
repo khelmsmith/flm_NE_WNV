@@ -15,7 +15,7 @@ call.flm(
   in.seed = NULL,
   lag.lengths = c(12, 18, 24, 30, 36),
   fillzeros = FALSE,
-  nsims = 0
+  nsim = 0
 )
 }
 \arguments{
@@ -39,7 +39,7 @@ call.flm(
 
 \item{fillzeros}{Logical. If true, add zero predictions for counties that never had any cases.}
 
-\item{nsims}{Integer. Number of samples to draw from posterior distribution. Defaults to zero, which has the expected value of cases in predcases.}
+\item{nsim}{Integer. Number of samples to draw from posterior distribution. Defaults to zero, which has the expected value of cases in predcases.}
 }
 \description{
 Main function
