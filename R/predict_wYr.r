@@ -1,10 +1,18 @@
-#' Predict data, using imputation to get "new years"
+#' Predict data
 #' 
 #' @param fittedModel Model to predict from
 #' @param allLagsT The assembled data set to use for training
 #' @param allLagsO The assembled data set to use for out-of-sample prediction
+#' @param fillzeros Logical. If TRUE fill in with zeros counties that have no cases ever.
+#' @param allunits Character. Vector of county names in complete data set. Used 
+#'   when fillzeros == TRUE
+#' @param nsim Integer. Number of samples to draw from posterior distribution. Defaults to zero, which has the expected value of cases in predcases.
+#' @name predict
 #' @export
-predict_wYr = function(fittedModel, allLagsT, allLagsO){
+NULL
+
+#' @describeIn predict Predict from models including year
+predict_wYr = function(fittedModel, allLagsT, allLagsO, fillzeros, allunits, nsim){
   
   # Plug in the model formula here
   modform <- formula(fittedModel)
@@ -64,9 +72,36 @@ predict_wYr = function(fittedModel, allLagsT, allLagsO){
   preds <- predict(predmod, newdata=allLagsO, type = "link", se=TRUE) 
   allLagsO$fit <- preds[[1]]
   allLagsO$se <- preds[[2]]
-  allLagsO <- allLagsO[,c("County", "year", "cases", "fit", "se")]
   
-  allLagsO <- dplyr::mutate(allLagsO, predcases = exp(fit))
+  if (nsim > 0){
+    allLagsO$predcases <- simulate(predmod, newdata = allLagsO, nsim = nsim)
+  } else {
+    allLagsO$predcases <- exp(allLagsO$fit)
+  }
 
+  allLagsO <- allLagsO[,c("County", "year", "cases", "fit", "se", "predcases")]
+  
+  if (fillzeros){
+    message("Filling in counties with no cases with zero predictions.")
+    # allunits has all counties, including those with zeros.
+    # extract counties in cases that are NOT in results$predictions
+    # to identify counties to fill in
+    missingunits <- !(allunits %in% unique(allLagsO$County))
+    if (sum(missingunits) > 0){
+      missingunits <- allunits[missingunits]
+      missingunits <- data.frame(County = missingunits,
+                                 year = allLagsO$year[1],
+                                 cases = 0,
+                                 fit = NA_real_,
+                                 se = NA_real_,
+                                 predcases = ifelse(nsim > 0, matrix(0, nrow = length(missingunits),
+                                                                     ncol = nsim),
+                                                    0))
+      allLagsO <- dplyr::bind_rows(allLagsO, missingunits)                               
+    } else {
+      message("No missing units found")
+    }
+  }
+  
   return(allLagsO)
 }

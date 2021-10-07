@@ -4,12 +4,15 @@
 #' @param allmods List of models
 #' @param allLagsT Training data
 #' @param allLagsO Out-of-sample data
-#' @param results.path where results are written
+#' @param fillzeros Logical. If TRUE fill in with zeros counties that have no cases ever.
+#' @param allunits Character. Vector of county names in complete data set. Used 
+#'   when fillzeros == TRUE
+#' @param nsim Integer. Number of samples to draw from posterior distribution. Defaults to zero, which has the expected value of cases in predcases.
 #'
 #' @return Returns predictions for the out-of-sample year, a list of fitted models, AIC scores, and the model with the lowest AIC score
 #' @export
 #'
-models_lags = function(allmods, allLagsT, allLagsO, results.path){
+models_lags = function(allmods, allLagsT, allLagsO, fillzeros, allunits, nsim){
   allfits <- map(allmods, ~gam(as.formula(.x), data=allLagsT, family=nb()))
   # only predict from AIC best model
   AICfits <- map_dbl(allfits, MuMIn::AICc)
@@ -17,9 +20,9 @@ models_lags = function(allmods, allLagsT, allLagsO, results.path){
   form <- Reduce(paste, deparse(allfits[[best]]$formula[3]))
   
   if (grepl("year", form) == TRUE ){ 
-    preds <- predict_wYr(allfits[[best]], allLagsT, allLagsO)
+    preds <- predict_wYr(allfits[[best]], allLagsT, allLagsO, fillzeros, allunits, nsim)
   } else if (grepl("year", form) == FALSE ) {
-    preds <- predict_noYr(allfits[[best]], allLagsT, allLagsO)
+    preds <- predict_noYr(allfits[[best]], allLagsT, allLagsO, fillzeros, allunits, nsim)
   }
 
   return(list(predictions= preds,
