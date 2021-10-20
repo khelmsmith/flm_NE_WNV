@@ -12,7 +12,7 @@ predict_noYr = function(fittedModel, allLagsT, allLagsO, fillzeros, allunits, ns
     allLagsO$predcases <- exp(allLagsO$fit)
   }
 
-  allLagsO <- allLagsO[,c("County", "year", "cases", "Lcases", "fit", "se", "predcases")]
+  allLagsO <- allLagsO[,c("County", "year", "cases", "fit", "se", "predcases")]
   
   if (fillzeros){
     message("Filling in counties with no cases with zero predictions.")
