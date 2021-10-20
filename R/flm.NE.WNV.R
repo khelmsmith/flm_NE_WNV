@@ -110,7 +110,7 @@ NULL
 #' @export
 call.flm = function(pop, cases, weather, spi, spei, target.date = "2018-02-01",
                     start.year = 2002, in.seed = NULL, lag.lengths = c(12, 18, 24, 30, 36),
-                    fillzeros = FALSE, nsim = 0){
+                    fillzeros = FALSE, nsim = 0, predict_from = "best"){
 
   checkInputs(pop, cases, weather, spi, spei, target.date, start.year, in.seed, lag.lengths)
   # to enable use of gratia::simulate.gam move this code to 
@@ -234,7 +234,7 @@ call.flm = function(pop, cases, weather, spi, spei, target.date = "2018-02-01",
   
   process.start = Sys.time()
 
-  results <- models_lags(allmods, allLagsT, allLagsO, fillzeros, allunits, nsim) 
+  results <- models_lags(allmods, allLagsT, allLagsO, fillzeros, allunits, nsim, predict_from) 
 
   message(sprintf("Elapsed Time: %.2f; Process time: %.2f", (Sys.time() - start.time), (Sys.time() - process.start)))
 
