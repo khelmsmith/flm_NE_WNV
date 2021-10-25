@@ -15,7 +15,8 @@ call.flm(
   in.seed = NULL,
   lag.lengths = c(12, 18, 24, 30, 36),
   fillzeros = FALSE,
-  nsim = 0
+  nsim = 0,
+  predict_from = "best"
 )
 }
 \arguments{

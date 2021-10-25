@@ -16,16 +16,7 @@
 #' @export
 #'
 models_lags = function(allmods, allLagsT, allLagsO, fillzeros, allunits, nsim, predict_from = c("best","all")){
-predict_switch <- function(fittedmodel, allLagsT, allLagsO, fillzeros, allunits, nsim){
-  form <- Reduce(paste, deparse(fittedmodel$formula[3]))
-  
-  if (grepl("year", form) == TRUE ){ 
-    preds <- predict_wYr(fittedmodel, allLagsT, allLagsO, fillzeros, allunits, nsim)
-  } else if (grepl("year", form) == FALSE ) {
-    preds <- predict_noYr(fittedmodel, allLagsT, allLagsO, fillzeros, allunits, nsim)
-  }
-  return(preds)
-}
+
   allfits <- map(allmods, ~gam(as.formula(.x), data=allLagsT, family=nb()))
   AICfits <- map_dbl(allfits, MuMIn::AICc)
   best <- which.min(AICfits)
@@ -35,7 +26,8 @@ predict_switch <- function(fittedmodel, allLagsT, allLagsO, fillzeros, allunits,
     # only predict from AIC best model
     preds <- predict_switch(allfits[[best]], allLagsT, allLagsO, fillzeros, allunits, nsim)
   } else if (predict_from == "all") {
-    preds <- map(allfits, predict_switch, allLagsT, allLagsO, fillzeros, allunits, nsim)
+    # TODO: this is incorrect -- need CRPS from all models on either in sample or cross-validated out of sample data
+    preds <- map(allfits, cross_validate, allLagsT, fillzeros, allunits, nsim)
   } else {
     stop("Unknown choice in predict_from argument to model_lags")
   }
@@ -46,5 +38,26 @@ predict_switch <- function(fittedmodel, allLagsT, allLagsO, fillzeros, allunits,
                            best = best)))
 }
 
-
+#' Parse the model formula and call the appropriate predict function
+#'
+#' @param fittedModel Model to predict from
+#' @param allLagsT The assembled data set to use for training
+#' @param allLagsO The assembled data set to use for out-of-sample prediction
+#' @param fillzeros Logical. If TRUE fill in with zeros counties that have no cases ever.
+#' @param allunits Character. Vector of county names in complete data set. Used 
+#'   when fillzeros == TRUE
+#' @param nsim Integer. Number of samples to draw from posterior distribution. Defaults to zero, which has the expected value of cases in predcases.
+#'
+#' @return
+#'
+predict_switch <- function(fittedmodel, allLagsT, allLagsO, fillzeros, allunits, nsim){
+  form <- Reduce(paste, deparse(fittedmodel$formula[3]))
+  
+  if (grepl("year", form) == TRUE ){ 
+    preds <- predict_wYr(fittedmodel, allLagsT, allLagsO, fillzeros, allunits, nsim)
+  } else if (grepl("year", form) == FALSE ) {
+    preds <- predict_noYr(fittedmodel, allLagsT, allLagsO, fillzeros, allunits, nsim)
+  }
+  return(preds)
+}
 
