@@ -4,7 +4,15 @@
 \alias{models_lags}
 \title{Fits the models to training data and generates the predictions}
 \usage{
-models_lags(allmods, allLagsT, allLagsO, fillzeros, allunits, nsim)
+models_lags(
+  allmods,
+  allLagsT,
+  allLagsO,
+  fillzeros,
+  allunits,
+  nsim,
+  predict_from = c("best", "all")
+)
 }
 \arguments{
 \item{allmods}{List of models}
@@ -19,9 +27,14 @@ models_lags(allmods, allLagsT, allLagsO, fillzeros, allunits, nsim)
 when fillzeros == TRUE}
 
 \item{nsim}{Integer. Number of samples to draw from posterior distribution. Defaults to zero, which has the expected value of cases in predcases.}
+
+\item{predict_from}{Character. predict from AIC best model only, or from all models?}
 }
 \value{
-Returns predictions for the out-of-sample year, a list of fitted models, AIC scores, and the model with the lowest AIC score
+Returns predictions for the out-of-sample year, a list of fitted models, AIC scores, and the model with the lowest AIC score. The 
+predictions object could be a vector (nsim = 0 and predict_from == "best"),
+a matrix (nsim > 0 and predict_from == "best"),
+or a list of vectors or matrices (predict_from == "all")
 }
 \description{
 Fits the models to training data and generates the predictions

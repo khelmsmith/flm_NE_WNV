@@ -17,6 +17,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r data, message=FALSE}
 library(tidyverse)
 library(flm.NE.WNV) 
+library(MuMIn)
 
 # Read in population data
 pop = flm.NE.WNV::NE_county_pops  %>% 
@@ -64,7 +65,7 @@ spei = flm.NE.WNV::spei %>%
   as.data.frame()
 
 # Specify the last date to use -- package data incomplete for 2019
-target.date = "2012-02-01" 
+target.date = "2016-02-01" 
 #target.date = "2019-03-01" -- this should fail with an error
 # Specify the first year of data to use
 start.year = 2002
@@ -122,13 +123,14 @@ flm.results = call.flm(pop, cases, NEdat,
                        spi, spei, target.date, start.year, 
                        in.seed = in.seed, lag.lengths,
                        fillzeros = TRUE,
-                       nsim = 10)
+                       nsim = 10,
+                       predict_from = "all")
 
 ```
 
 ## Overview of model chosen by AIC 
 ```{r}
-top <- flm.results[[3]]$best
+top <- flm.results[[3]]$AICbest
 
 mod <- summary(flm.results[[3]]$fittedModels[[top]])
 mod
@@ -136,7 +138,7 @@ mod
 ```
 ## View predictions from best-fit model
 ```{r}
-flm.results[[1]]
+flm.results[[1]][[top]]
 ```
 
 ```{r}
@@ -149,4 +151,35 @@ ggplot(data = dist_lag_terms) +
   facet_wrap(~label)
 ```
 
+```{r}
+aictable <- model.sel(flm.results[[3]]$fittedModel)
+```
+
+# pull out the "in sample" CRPS scores.
+```{r}
+model.sims <- map(flm.results[[3]]$fittedModels, simulate, nsim = 100)
+names(model.sims) <- 1:168
+model.crps <- map(model.sims,
+                  ~scoringRules::crps_sample(allLagsT$cases, .)) %>%
+  map(~bind_cols(allLagsT[,c("County","year")], crps = .))
+  
+crps.table <- model.crps %>% 
+  bind_rows(.id = "model") %>% 
+  group_by(model) %>% 
+  summarize(mean_crps = mean(crps),
+            se_crps = sd(crps)/sqrt(n())) %>% 
+  arrange(mean_crps) %>% 
+  mutate(order = row_number())
+ggplot(crps.table, mapping = aes(x = order, y = mean_crps)) +
+  geom_point()
+```
+
+Are they related to the AIC scores?
+
+```{r}
+crps.table$AICc <- flm.results[[3]]$AICfits[as.numeric(crps.table$model)]
+ggplot(data = crps.table,
+       mapping = aes(x = mean_crps, y = AICc)) + 
+  geom_point()
+```
 
