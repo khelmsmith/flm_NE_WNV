@@ -15,18 +15,21 @@
 #' or a list of vectors or matrices (predict_from == "all")
 #' @export
 #'
-models_lags = function(allmods, allLagsT, allLagsO, fillzeros, allunits, nsim, predict_from = c("best","all")){
+models_lags = function(allmods, allLagsT, allLagsO, fillzeros, allunits, nsim, predict_from = c("best","all", "cv")){
 
   allfits <- map(allmods, ~gam(as.formula(.x), data=allLagsT, family=nb()))
   AICfits <- map_dbl(allfits, MuMIn::AICc)
-  best <- which.min(AICfits)
+  AICbest <- which.min(AICfits)
 
+  #test <- cross_validate(allfits[[AICbest]], allLagsT, fillzeros, allunits, nsim)
+  
   predict_from <- match.arg(predict_from)
   if (predict_from == "best"){
     # only predict from AIC best model
-    preds <- predict_switch(allfits[[best]], allLagsT, allLagsO, fillzeros, allunits, nsim)
+    preds <- predict_switch(allfits[[AICbest]], allLagsT, allLagsO, fillzeros, allunits, nsim)
   } else if (predict_from == "all") {
-    # TODO: this is incorrect -- need CRPS from all models on either in sample or cross-validated out of sample data
+    preds <- map(allfits, predict_switch, allLagsT, allLagsO, fillzeros, allunits, nsim)
+  } else if (predict_from == "cv") {
     preds <- map(allfits, cross_validate, allLagsT, fillzeros, allunits, nsim)
   } else {
     stop("Unknown choice in predict_from argument to model_lags")
@@ -35,7 +38,7 @@ models_lags = function(allmods, allLagsT, allLagsO, fillzeros, allunits, nsim, p
   return(list(predictions = preds,
               other = list(fittedModels=allfits,
                            AICfits = AICfits,
-                           best = best)))
+                           AICbest = AICbest)))
 }
 
 #' Parse the model formula and call the appropriate predict function
