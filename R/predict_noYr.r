@@ -26,6 +26,7 @@ predict_noYr = function(fittedModel, allLagsT, allLagsO, unpredictedO, fillzeros
                                       matrix(0, nrow = length(missingunits),
                                              ncol = nsim),
                                       0)
+      unpredictedO <- unpredictedO[,c("County", "year", "cases", "predcases")]
       allLagsO <- dplyr::bind_rows(allLagsO, unpredictedO)                               
     } else {
       message("No missing units found")

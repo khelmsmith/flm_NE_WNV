@@ -56,7 +56,7 @@ assemble.data.lags = function(pop, cases, weather, spi, spei, target.date, start
   HC <- HCcases %>%
     dplyr::group_by(County) %>%
     dplyr::mutate(total_cases = sum(cases)) %>% 
-    dplyr::filter(total_cases > 0L) %>% 
+#    dplyr::filter(total_cases > 0L) %>% 
       dplyr::mutate(CI = lag(cumsum(cases/pop100K)),
              Lcases = lag(cases)) %>% 
     dplyr::mutate(CI = case_when(is.na(CI)~0,

@@ -121,10 +121,10 @@ Note: It takes about 5 minutes to run the models with a lag of 9. It takes 25 mi
 
 flm.results = call.flm(pop, cases, NEdat, 
                        spi, spei, target.date, start.year, 
-                       in.seed = in.seed, lag.lengths,
+                       in.seed = in.seed, lag.lengths = 12,
                        fillzeros = TRUE,
                        nsim = 10,
-                       predict_from = "all")
+                       predict_from = "best")
 
 ```
 
@@ -158,7 +158,7 @@ aictable <- model.sel(flm.results[[3]]$fittedModel)
 # pull out the "in sample" CRPS scores.
 ```{r}
 model.sims <- map(flm.results[[3]]$fittedModels, simulate, nsim = 100)
-names(model.sims) <- 1:168
+names(model.sims) <- 1:64
 model.crps <- map(model.sims,
                   ~scoringRules::crps_sample(allLagsT$cases, .)) %>%
   map(~bind_cols(allLagsT[,c("County","year")], crps = .))
