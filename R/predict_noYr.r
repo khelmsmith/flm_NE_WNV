@@ -1,7 +1,7 @@
 
 #' @describeIn predict Predict without year in model 
-predict_noYr = function(fittedModel, allLagsT, allLagsO, fillzeros, allunits, nsim){
-
+predict_noYr = function(fittedModel, allLagsT, allLagsO, unpredictedO, fillzeros, allunits, nsim){
+  
   predsO <- predict(fittedModel, newdata=allLagsO, type = "link", se=TRUE)
   allLagsO$fit <- predsO[[1]]
   allLagsO$se <- predsO[[2]]
@@ -11,7 +11,7 @@ predict_noYr = function(fittedModel, allLagsT, allLagsO, fillzeros, allunits, ns
   } else {
     allLagsO$predcases <- exp(allLagsO$fit)
   }
-
+  
   allLagsO <- allLagsO[,c("County", "year", "cases", "fit", "se", "predcases")]
   
   if (fillzeros){
@@ -20,17 +20,13 @@ predict_noYr = function(fittedModel, allLagsT, allLagsO, fillzeros, allunits, ns
     # extract counties in cases that are NOT in results$predictions
     # to identify counties to fill in
     missingunits <- !(allunits %in% unique(allLagsO$County))
+    if(sum(missingunits) != nrow(unpredictedO)) stop("bad missing units count in predict_noYr()")
     if (sum(missingunits) > 0){
-      missingunits <- allunits[missingunits]
-      missingunits <- data.frame(County = missingunits,
-                                 year = allLagsO$year[1],
-                                 cases = 0,
-                                 fit = NA_real_,
-                                 se = NA_real_,
-                                 predcases = ifelse(nsim > 0, matrix(0, nrow = length(missingunits),
-                                                                     ncol = nsim),
-                                                    0))
-      allLagsO <- dplyr::bind_rows(allLagsO, missingunits)                               
+      unpredictedO$predcases = ifelse(nsim > 0, 
+                                      matrix(0, nrow = length(missingunits),
+                                             ncol = nsim),
+                                      0)
+      allLagsO <- dplyr::bind_rows(allLagsO, unpredictedO)                               
     } else {
       message("No missing units found")
     }

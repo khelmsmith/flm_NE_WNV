@@ -124,6 +124,8 @@ call.flm = function(pop, cases, weather, spi, spei, target.date = "2018-02-01",
   adl.out = assemble.data.lags(pop, cases, weather, spi, spei, target.date, start.year, in.seed, lag.lengths = lag.lengths)
   allLagsT = adl.out[[1]]
   allLagsO = adl.out[[2]]
+  unpredictedO = adl.out[[3]]
+  
   message(sprintf("Elapsed Time: %.2f", Sys.time() - start.time))
   
   
@@ -234,7 +236,7 @@ call.flm = function(pop, cases, weather, spi, spei, target.date = "2018-02-01",
   
   process.start = Sys.time()
 
-  results <- models_lags(allmods, allLagsT, allLagsO, fillzeros, allunits, nsim, predict_from) 
+  results <- models_lags(allmods, allLagsT, allLagsO, unpredictedO, fillzeros, allunits, nsim, predict_from) 
 
   message(sprintf("Elapsed Time: %.2f; Process time: %.2f", (Sys.time() - start.time), (Sys.time() - process.start)))
 

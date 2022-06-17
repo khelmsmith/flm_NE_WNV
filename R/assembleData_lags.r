@@ -209,6 +209,9 @@ assemble.data.lags = function(pop, cases, weather, spi, spei, target.date, start
   counties_w_cases <- dplyr::group_by(counties_w_cases, County)
   counties_w_cases <- dplyr::mutate(counties_w_cases, total_cases = sum(cases))
   counties_w_cases <- unique(counties_w_cases[counties_w_cases$total_cases > 0,"County", drop = TRUE])
+  # save the target year data for unpredicted counties
+  unpredictedO <- allLags[!(allLags$County %in% counties_w_cases) & 
+                            allLags$year == target.year, ]
   allLags <- allLags[allLags$County %in% counties_w_cases, ]
     
   allLags$County <- as.factor(allLags$County)
@@ -226,6 +229,6 @@ assemble.data.lags = function(pop, cases, weather, spi, spei, target.date, start
   
   allLagsO <- allLags[allLags$year == target.year,] # out-of-sample data
   
-  return(list(allLagsT, allLagsO))
+  return(list(allLagsT, allLagsO, unpredictedO))
 }
 

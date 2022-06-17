@@ -3,6 +3,7 @@
 #' @param allmods List of models
 #' @param allLagsT Training data
 #' @param allLagsO Out-of-sample data
+#' @param unpredictedO out-of-sample data for counties with no cases in training data
 #' @param fillzeros Logical. If TRUE fill in with zeros counties that have no cases ever.
 #' @param allunits Character. Vector of county names in complete data set. Used 
 #'   when fillzeros == TRUE
@@ -15,7 +16,7 @@
 #' or a list of vectors or matrices (predict_from == "all")
 #' @export
 #'
-models_lags = function(allmods, allLagsT, allLagsO, fillzeros, allunits, nsim, predict_from = c("best","all", "cv")){
+models_lags = function(allmods, allLagsT, allLagsO, unpredictedO, fillzeros, allunits, nsim, predict_from = c("best","all", "cv")){
 
   allfits <- map(allmods, ~gam(as.formula(.x), data=allLagsT, family=nb()))
   AICfits <- map_dbl(allfits, MuMIn::AICc)
@@ -26,11 +27,11 @@ models_lags = function(allmods, allLagsT, allLagsO, fillzeros, allunits, nsim, p
   predict_from <- match.arg(predict_from)
   if (predict_from == "best"){
     # only predict from AIC best model
-    preds <- predict_switch(allfits[[AICbest]], allLagsT, allLagsO, fillzeros, allunits, nsim)
+    preds <- predict_switch(allfits[[AICbest]], allLagsT, allLagsO, unpredictedO, fillzeros, allunits, nsim)
   } else if (predict_from == "all") {
-    preds <- map(allfits, predict_switch, allLagsT, allLagsO, fillzeros, allunits, nsim)
+    preds <- map(allfits, predict_switch, allLagsT, allLagsO, unpredictedO, fillzeros, allunits, nsim)
   } else if (predict_from == "cv") {
-    preds <- map(allfits, cross_validate, allLagsT, fillzeros, allunits, nsim)
+    preds <- map(allfits, cross_validate, allLagsT, fillzeros, unpredictedO, allunits, nsim)
   } else {
     stop("Unknown choice in predict_from argument to model_lags")
   }
@@ -47,19 +48,20 @@ models_lags = function(allmods, allLagsT, allLagsO, fillzeros, allunits, nsim, p
 #' @param allLagsT The assembled data set to use for training
 #' @param allLagsO The assembled data set to use for out-of-sample prediction
 #' @param fillzeros Logical. If TRUE fill in with zeros counties that have no cases ever.
+#' @param unpredictedO out-of-sample data for counties with no cases in training data
 #' @param allunits Character. Vector of county names in complete data set. Used 
 #'   when fillzeros == TRUE
 #' @param nsim Integer. Number of samples to draw from posterior distribution. Defaults to zero, which has the expected value of cases in predcases.
 #'
 #' @return
 #'
-predict_switch <- function(fittedmodel, allLagsT, allLagsO, fillzeros, allunits, nsim){
+predict_switch <- function(fittedmodel, allLagsT, allLagsO, unpredictedO, fillzeros, allunits, nsim){
   form <- Reduce(paste, deparse(fittedmodel$formula[3]))
   
   if (grepl("year", form) == TRUE ){ 
-    preds <- predict_wYr(fittedmodel, allLagsT, allLagsO, fillzeros, allunits, nsim)
+    preds <- predict_wYr(fittedmodel, allLagsT, allLagsO, unpredictedO, fillzeros, allunits, nsim)
   } else if (grepl("year", form) == FALSE ) {
-    preds <- predict_noYr(fittedmodel, allLagsT, allLagsO, fillzeros, allunits, nsim)
+    preds <- predict_noYr(fittedmodel, allLagsT, allLagsO, unpredictedO, fillzeros, allunits, nsim)
   }
   return(preds)
 }
